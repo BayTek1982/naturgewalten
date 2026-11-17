@@ -17,14 +17,14 @@
 <style>
 :root{
   --bg:#05080d; --panel:#0b1118; --card:#0f1620; --card2:#0a0f15; --line:#1b2532; --line2:#2a3647; --line3:#36465b; --text:#dfe6ef; --soft:#b9c4d2; --soft2:#c9d2de; --mute:#7f8b9c;
-  --up:#1fcf8f; --down:#f0605d; --gold:#f5c542; --blue:#4c9aff; --purple:#b388ff; --orange:#ff9f43; --aqua:#2dd4bf;
+  --up:#1fcf8f; --down:#f0605d; --gold:#f5c542; --blue:#4c9aff; --purple:#b388ff; --orange:#ff9f43; --aqua:#2dd4bf; --ice:#9cc9ff; --indigo:#8b93ff; --rose:#ff7a93; --lime:#a3e635;
   --chart:#020407; --hdr:rgba(5,8,13,.92); --veil:rgba(5,8,13,.75); --on-gold:#1b1505; --on-up:#03140d;
   --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
   --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
 }
 [data-theme="light"]{
   --bg:#f3f5f9; --panel:#eef2f7; --card:#ffffff; --card2:#f7f9fc; --line:#dde3ec; --line2:#c9d2de; --line3:#b7c2d1; --text:#131a26; --soft:#3d4757; --soft2:#2c3646; --mute:#5d6879;
-  --up:#087f5b; --down:#c62f2c; --gold:#946200; --blue:#1a66c9; --purple:#7445cc; --orange:#b45000; --aqua:#0f766e;
+  --up:#087f5b; --down:#c62f2c; --gold:#946200; --blue:#1a66c9; --purple:#7445cc; --orange:#b45000; --aqua:#0f766e; --ice:#1d5fa8; --indigo:#4338ca; --rose:#be123c; --lime:#4d7c0f;
   --chart:#ffffff; --hdr:rgba(243,245,249,.92); --veil:rgba(255,255,255,.85); --on-gold:#ffffff; --on-up:#ffffff;
 }
 *{box-sizing:border-box}
@@ -138,6 +138,21 @@ canvas.scene{display:block;width:100%;aspect-ratio:16/10}
 .score{font-family:var(--mono);font-size:54px;font-weight:800;margin:6px 0}
 .rep{display:grid;gap:8px;margin-top:10px}
 .rep button{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left}
+.qareas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px;max-width:900px}
+.qareas button{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:12px;padding:12px;text-align:left}
+.qareas .ic{color:var(--acc);display:block}.qareas .ic svg{width:28px;height:28px}.qareas b{display:block;margin-top:6px;font-size:14.5px}.qareas small{color:var(--mute);font-family:var(--mono);font-size:10.5px}
+.np{max-width:760px}.npbar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.npbar i{display:block;height:100%;background:var(--up);transition:width .3s}
+.ncat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:12px;max-width:760px}
+.ncat h3{margin:0 0 6px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--up);display:flex;justify-content:space-between}.ncat h3 span{color:var(--mute)}
+.nitem{display:flex;gap:12px;align-items:flex-start;padding:9px 4px;border-top:1px solid var(--line);font-size:15px;line-height:1.4;cursor:pointer}
+.nitem:first-of-type{border-top:0}.nitem input{width:22px;height:22px;flex:none;accent-color:var(--up);margin:0}.nitem.on span{color:var(--mute);text-decoration:line-through}
+.calcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;max-width:900px}
+.calcbox{border-top:3px solid var(--acc,var(--blue))}.crow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:6px 0 10px}
+.crow label{font-size:12px;color:var(--mute);font-family:var(--mono);letter-spacing:.03em;line-height:1.35}
+.crow input{width:100%;margin-top:5px;padding:10px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:17px}
+.cout{display:grid;gap:8px}.cres{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.cres b{display:block;font-family:var(--mono);font-size:20px}.cres span,.cres small{display:block;font-size:12px;color:var(--mute);margin-top:2px}
+.clink{margin-top:10px;background:none;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;color:var(--soft)}
 .foot{color:var(--mute);font-size:12px;margin-top:26px;max-width:900px;line-height:1.5}
 @media (max-width:860px){
   main{grid-template-columns:1fr}
@@ -176,11 +191,11 @@ const MONO="'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace";
 const THEMES={
  dark:{sky1:'#07101d',sky2:'#132238',storm1:'#05080d',storm2:'#141c28',ground:'#1d3324',ground2:'#264430',earth:'#3b2b1f',earth2:'#2b1f16',rock:'#55443a',sea:'#0f4c74',sea2:'#06263f',
   cloud:'#d5dde7',cloud2:'#7b8798',cloudLine:'rgba(255,255,255,.18)',text:'#e6ecf3',mute:'#8c98a9',grid:'rgba(255,255,255,.08)',pillBg:'rgba(2,4,7,.86)',
-  gold:'#f5c542',up:'#1fcf8f',down:'#f0605d',blue:'#4c9aff',purple:'#b388ff',orange:'#ff9f43',aqua:'#2dd4bf',lava:'#ff5a1f',magma:'#ff8a2a',sun:'#ffd34d',
+  gold:'#f5c542',up:'#1fcf8f',down:'#f0605d',blue:'#4c9aff',purple:'#b388ff',orange:'#ff9f43',aqua:'#2dd4bf',ice:'#9cc9ff',indigo:'#8b93ff',rose:'#ff7a93',lime:'#a3e635',snow:'#e9f1fa',lava:'#ff5a1f',magma:'#ff8a2a',sun:'#ffd34d',
   mantle:'#a8361c',mantle2:'#e0611f',core:'#f2a23a',inner:'#fff0b0',house:'#c9d2de',roof:'#c0503a',wall2:'#8a96a8',leaf:'#2f8f55',trunk:'#6b4a2f',flash:'#ffffff',bolt:'#fff6c8',boltGlow:'#b9a7ff'},
  light:{sky1:'#a9cdef',sky2:'#e6f1fb',storm1:'#5d6878',storm2:'#9aa6b5',ground:'#8dbb73',ground2:'#6f9f58',earth:'#b48b62',earth2:'#9a7350',rock:'#8f7461',sea:'#3a8cc6',sea2:'#1d5f91',
   cloud:'#ffffff',cloud2:'#aab4c2',cloudLine:'rgba(19,26,38,.22)',text:'#131a26',mute:'#5d6879',grid:'rgba(19,26,38,.08)',pillBg:'rgba(255,255,255,.95)',
-  gold:'#946200',up:'#087f5b',down:'#c62f2c',blue:'#1a66c9',purple:'#7445cc',orange:'#b45000',aqua:'#0f766e',lava:'#e8470e',magma:'#f07a1a',sun:'#f6b800',
+  gold:'#946200',up:'#087f5b',down:'#c62f2c',blue:'#1a66c9',purple:'#7445cc',orange:'#b45000',aqua:'#0f766e',ice:'#1d5fa8',indigo:'#4338ca',rose:'#be123c',lime:'#4d7c0f',snow:'#ffffff',lava:'#e8470e',magma:'#f07a1a',sun:'#f6b800',
   mantle:'#c2461f',mantle2:'#ec7a2f',core:'#f5b34a',inner:'#fff3c4',house:'#ffffff',roof:'#b7412c',wall2:'#9aa6b5',leaf:'#2e8b4e',trunk:'#7a5434',flash:'#ffffff',bolt:'#fff59a',boltGlow:'#7445cc'}};
 const K=Object.assign({},THEMES.dark);
 let THEME='dark';
@@ -248,13 +263,23 @@ const AREAS=[
  {id:'tornado',name:'Tornados',acc:'purple',desc:'Windscherung, Superzelle, Rüssel – und wie du dich schützt.'},
  {id:'hurrikan',name:'Hurrikane',acc:'blue',desc:'Der Motor aus warmem Meer, das Auge und die Sturmflut.'},
  {id:'vulkan',name:'Vulkane',acc:'orange',desc:'Vom Erdinneren über Plattentektonik bis zum Ausbruch.'},
- {id:'erdbeben',name:'Erdbeben & Tsunami',acc:'aqua',desc:'Spannung im Gestein, Erdbebenwellen und Riesenwellen.'}];
+ {id:'erdbeben',name:'Erdbeben & Tsunami',acc:'aqua',desc:'Spannung im Gestein, Erdbebenwellen und Riesenwellen.'},
+ {id:'winter',name:'Winter & Kälte',acc:'ice',desc:'Schneesturm, Lawinen, Eisregen und eisige Kältewellen.'},
+ {id:'wasser',name:'Wasser & Flut',acc:'indigo',desc:'Hochwasser, Sturzfluten, Starkregen, Deichbruch und Monsun.'},
+ {id:'hitze',name:'Hitze & Dürre',acc:'rose',desc:'Hitzewellen, Dürre, Waldbrand, Sandsturm und Feuerwirbel.'},
+ {id:'himmel',name:'Himmel & Weltall',acc:'lime',desc:'Polarlichter, Sonnenstürme und Meteoriten.'}];
 const ICONS={
  gewitter:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 26c-5 0-7-4-6-7 1-4 5-5 8-4 2-6 8-8 13-6 3 1 5 4 5 7 4-1 8 2 8 6 0 3-3 4-6 4"/><path d="M25 22l-6 11h6l-3 10 10-14h-6l4-7z" fill="currentColor"/></svg>',
  tornado:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 8h36"/><path d="M10 15h28"/><path d="M15 22h20"/><path d="M19 29h13"/><path d="M22 36h7"/><path d="M24 42h2"/></svg>',
  hurrikan:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="24" cy="24" r="4" fill="currentColor"/><path d="M24 14c-8 0-14 5-15 13"/><path d="M24 34c8 0 14-5 15-13"/><path d="M34 24c0-8-4-14-11-17"/><path d="M14 24c0 8 4 14 11 17"/></svg>',
  vulkan:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 42l13-22h14l13 22z"/><path d="M20 20l2 5 3-4 3 6" /><path d="M21 13c-2-3 0-6 3-6 1-3 6-3 7 0 3 0 4 3 2 5"/><circle cx="15" cy="10" r="1.6" fill="currentColor"/><circle cx="35" cy="16" r="1.6" fill="currentColor"/></svg>',
  erdbeben:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 34c5 0 6-10 12-10s8 12 14 12 8-8 14-8"/><path d="M4 42h40"/><path d="M8 14l5 6 4-12 5 15 4-9 3 5h5"/></svg>',
+ winter:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M24 4v40M6.7 14l34.6 20M6.7 34l34.6-20"/><path d="M19 7l5 5 5-5M19 41l5-5 5 5M7 20l7-2-2-7M41 28l-7 2 2 7M7 28l7 2-2 7M41 20l-7-2 2-7"/></svg>',
+ wasser:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5c6 9 11 15 11 21a11 11 0 0 1-22 0c0-6 5-12 11-21z"/><path d="M4 42c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3"/></svg>',
+ hitze:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M9.9 38.1l4.2-4.2M33.9 14.1l4.2-4.2"/></svg>',
+ himmel:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 30c6-14 14-20 20-12s12 2 20-10"/><path d="M4 40c6-10 14-14 20-8s12 0 20-8" opacity=".6"/><path d="M36 30l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z" fill="currentColor"/></svg>',
+ notfall:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="32" height="32" rx="5"/><path d="M17 10V6h14v4"/><path d="M16 26l6 6 10-12"/></svg>',
+ rechner:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="5" width="30" height="38" rx="5"/><rect x="14" y="10" width="20" height="8" rx="2"/><path d="M16 25h2M24 25h2M32 25h0M16 31h2M24 31h2M16 37h2M24 37h2M31 30v8"/></svg>',
  quiz:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M18 19c0-4 3-6 6-6s6 2 6 6c0 5-6 5-6 10"/><circle cx="24" cy="35" r="1.8" fill="currentColor"/></svg>'};
 const LES=[];
 const add=o=>LES.push(o);
@@ -952,6 +977,704 @@ add({id:'tsunamikueste',area:'erdbeben',title:'Tsunami an der Küste',sub:'Warnz
   bedeutung:'Zwischen Rückzug des Meeres und Ankunft der Welle bleiben oft nur wenige Minuten. Die erste Welle ist nicht immer die größte.',
   tipp:'Merke: Erst wenn die Behörden Entwarnung geben, zurückkehren – nachfolgende Wellen können noch Stunden später kommen.'}});
 
+/* ===================== PAKET 1: Erweiterungen ===================== */
+function funnel(cx,top,tip,touch,t,c1,c2,wTop=26){const L=[],R=[];for(let k=0;k<=24;k++){const f=k/24,y=top+f*(tip-top),hw=mix(wTop,3+9*touch,Math.pow(f,.45))+1.6*Math.sin(t/110+f*14),sw=8*Math.sin(t/900)*f;L.push([cx+sw-hw,y]);R.unshift([cx+sw+hw,y]);}
+ const g=X.createLinearGradient(0,top,0,tip);g.addColorStop(0,c1);g.addColorStop(1,c2);poly(L.concat(R),g,null,1,.95);
+ for(let k=0;k<7;k++){const f=((k/7)+t/1600)%1,y=top+f*(tip-top),hw=mix(wTop,3+9*touch,Math.pow(f,.45));line(cx-hw+2,y,cx+hw-2,y+3,'#000',1.2,.18);}}
+function tower(x,gy,s=1){rectF(x-14*s,gy-110*s,28*s,110*s,K.wall2);poly([[x-18*s,gy-110*s],[x+18*s,gy-110*s],[x,gy-160*s]],K.roof);rectF(x-5*s,gy-80*s,10*s,16*s,K.sea2);}
+
+add({id:'kugelblitz',area:'gewitter',title:'Kugelblitz & Elmsfeuer',sub:'Rätselhafte Leuchterscheinungen im Gewitter',total:19000,
+ steps:[{at:0,text:'Elmsfeuer: Bei Gewitter leuchtet manchmal die Spitze von Kirchtürmen, Masten oder Schiffsmasten bläulich.'},
+  {at:3500,text:'Der Grund: Die starke elektrische Spannung bringt die Luft an spitzen Stellen zum Leuchten – eine Glimmentladung, ganz ohne Blitz.'},
+  {at:7500,text:'Kugelblitz: Sehr selten berichten Menschen von einer leuchtenden Kugel, die nach einem Blitzeinschlag durch die Luft schwebt.'},
+  {at:11500,text:'Sie ist meist etwa so groß wie ein Fußball, leuchtet einige Sekunden und verschwindet lautlos oder mit einem Knall.'},
+  {at:15000,text:'Kugelblitze sind bis heute nicht vollständig erforscht. Es gibt mehrere Theorien, aber noch keinen sicheren Beweis.'}],
+ draw(t){bg(K.storm1,K.storm2);const gy=258;ground(gy);for(let i=0;i<6;i++)cloud(i*92+10,30,140,56,K.cloud2,1,K.storm2);rain(0,W,60,gy,t,K.cloud2,.3,24,3);
+  tower(110,gy);const ea=P(t,0,1200),pu=.6+.4*Math.sin(t/140);
+  if(ea>0){glow(()=>circ(110,gy-160,7*pu,'#9fd8ff',ea),'#7fc8ff',22);for(let k=0;k<8;k++){const a=k*Math.PI/4+t/500;line(110,gy-160,110+Math.cos(a)*(10+5*pu),gy-160+Math.sin(a)*(10+5*pu),'#bfe6ff',1.4,ea*.8);}}
+  pill(110,52,'ELMSFEUER',K.aqua,ea,'c',11);pill(110,gy+20,'GLIMMEN AN DER SPITZE',K.aqua,P(t,3500,4100)*(1-P(t,7200,7500)),'c',10);
+  const f=flashAt(t,[7300],200);bolt(320,60,330,gy,7,P(t,7300,7400),2+3*f,t>7300?.2+.8*f:0);rectF(0,0,W,H,K.flash,f*.4);
+  const oa=P(t,7700,8300)*(1-P(t,14000,14300));if(oa>0){const p=Lp(t,7700,14000),ox=mix(330,420,p)+10*Math.sin(t/300),oy=gy-30-60*Math.sin(p*Math.PI)+6*Math.sin(t/200);
+   glow(()=>{circ(ox,oy,11,'#ffd27a',oa);circ(ox,oy,6,'#ffffff',oa);},'#ff9f43',26);pill(ox,oy-30,'KUGELBLITZ',K.orange,oa,'c',11);}
+  const pp=P(t,14000,14200)*(1-P(t,14200,14800));ring(420+10*Math.sin(14000/300),gy-30,20*P(t,14000,14800),'#ffd27a',3,pp);
+  pill(W-6,170,'NICHT ERFORSCHT ?',K.gold,P(t,15000,15600),'r',11);},
+ box:{was:'Elmsfeuer und Kugelblitze sind seltene Leuchterscheinungen bei Gewittern. Das Elmsfeuer ist gut erforscht, der Kugelblitz noch ein Rätsel.',
+  erkennen:['Elmsfeuer: bläulich-violettes Leuchten an Spitzen, oft mit Knistern','Kugelblitz: leuchtende Kugel, schwebt langsam, einige Sekunden lang','Kugelblitze treten meist kurz nach einem normalen Blitz auf'],
+  bedeutung:'Elmsfeuer zeigt, dass die Spannung sehr hoch ist – ein Blitzeinschlag in der Nähe ist dann gut möglich.',
+  tipp:'Benannt ist das Elmsfeuer nach dem heiligen Erasmus („Elmo“), dem Schutzpatron der Seeleute.'}});
+
+add({id:'blitzschutz',area:'gewitter',title:'Blitzschutz',sub:'Blitzableiter und Faradayscher Käfig',total:18000,
+ steps:[{at:0,text:'Ein Blitzableiter schützt ein Haus: Ganz oben auf dem Dach sitzt eine Fangstange aus Metall.'},
+  {at:3500,text:'Der Blitz schlägt in die Fangstange ein – und nicht ins Dach.'},
+  {at:6500,text:'Der Strom fließt über dicke Metalldrähte (Ableitungen) außen an der Hauswand nach unten …'},
+  {at:10000,text:'… und verteilt sich über den ERDER sicher im Boden. Im Haus passiert nichts.'},
+  {at:13500,text:'Auch Auto und Flugzeug schützen dich: Die Metallhülle leitet den Strom außen herum (Faradayscher Käfig).'}],
+ draw(t){bg(K.storm1,K.storm2);const gy=236;const eg=X.createLinearGradient(0,gy,0,H);eg.addColorStop(0,K.earth);eg.addColorStop(1,K.earth2);X.fillStyle=eg;X.fillRect(0,gy,W,H-gy);rectF(0,gy-4,W,5,K.ground);
+  for(let i=0;i<6;i++)cloud(i*92+10,24,140,52,K.cloud2,1,K.storm2);
+  rectF(150,gy-90,160,90,K.house);poly([[140,gy-90],[320,gy-90],[230,gy-140]],K.roof);rectF(180,gy-64,24,22,K.sea2);rectF(256,gy-64,24,22,K.sea2);
+  line(230,gy-140,230,gy-168,K.mute,3);
+  const cp=[[230,gy-168],[230,gy-140],[320,gy-90],[312,gy-90],[312,gy],[312,gy+28],[150,gy+28]];path(cp.slice(1),K.mute,2.5,.9);
+  const f=flashAt(t,[3500],220);bolt(205,50,230,gy-168,11,P(t,3500,3600),2+4*f,t>3500?.3+.7*f:0);rectF(0,0,W,H,K.flash,f*.35);
+  const ca=P(t,6500,7000);if(ca>0)for(let k=0;k<8;k++){const u=((t/1400)+k/8)%1;const n=cp.length-1,kk=u*n,i=Math.floor(kk),fr=kk-i,x=mix(cp[i][0],cp[i+1][0],fr),y=mix(cp[i][1],cp[i+1][1],fr);glow(()=>circ(x,y,3.5,K.gold,ca),K.gold,10);}
+  const ea=P(t,10000,10800);if(ea>0)for(let k=0;k<7;k++){const a=Math.PI*(k/6),r=18+((t/20)%18);line(150+k*25,gy+28,150+k*25+Math.cos(a)*r*.4,gy+28+Math.sin(a)*r*.6,K.gold,1.5,ea*.6);}
+  pill(242,gy-168,'FANGSTANGE',K.gold,P(t,0,700),'l',10.5);pill(318,gy-50,'ABLEITUNG',K.gold,P(t,6500,7100),'l',10.5);pill(230,gy+50,'ERDER',K.gold,ea,'c',10.5);
+  const aa=P(t,13500,14100);if(aa>0){const cx=410,cy=gy-6;rrect(cx-36,cy-18,72,16,6,K.blue,null,1,aa);rrect(cx-22,cy-30,44,14,6,K.blue,null,1,aa);circ(cx-20,cy-2,5,K.storm1,aa);circ(cx+20,cy-2,5,K.storm1,aa);
+   const f2=flashAt(t,[13700],250);bolt(400,50,410,cy-30,23,P(t,13700,13800),2+3*f2,.3+.7*f2);path([[cx,cy-30],[cx+22,cy-30],[cx+36,cy-18],[cx+36,cy-4]],K.gold,2,f2+.2);}
+  pill(410,gy+24,'AUTO = SICHER',K.up,aa,'c',10.5);},
+ box:{was:'Ein Blitzableiter (Blitzschutzanlage) leitet den Blitzstrom gezielt am Haus vorbei in die Erde.',
+  erkennen:['Fangstange oder Metalldraht auf dem Dachfirst','Dicke Drähte außen an der Hauswand','Erder: Metallband im Boden rund ums Haus'],
+  bedeutung:'Ohne Blitzschutz kann ein Einschlag das Dach in Brand setzen und Elektrogeräte zerstören. Ein Überspannungsschutz schützt zusätzlich die Geräte.',
+  tipp:'Im Auto mit Metalldach bist du sicher – Fenster zu, nichts Metallisches anfassen. Cabrios und Fahrräder schützen nicht!'}});
+
+add({id:'downburst',area:'gewitter',title:'Gewitterlinie & Fallböen',sub:'Wenn kalte Luft wie ein Wasserfall herabstürzt',total:18500,
+ steps:[{at:0,text:'Oft kommen Gewitter nicht allein, sondern als lange LINIE – manchmal Hunderte Kilometer lang.'},
+  {at:3500,text:'Aus einer Gewitterzelle stürzt kalte, schwere Luft wie ein Wasserfall nach unten: ein DOWNBURST (Fallböe).'},
+  {at:7000,text:'Am Boden prallt sie auf und strömt in alle Richtungen auseinander – mit oft über 100 km/h.'},
+  {at:10500,text:'Vorne schiebt sich die kalte Luft unter die warme. Dabei bildet sich eine BÖENWALZE (Shelf Cloud).'},
+  {at:14000,text:'Fallböen richten oft so viel Schaden an wie ein Tornado – aber die Bäume liegen dann alle in eine Richtung.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=250;
+  const la=P(t,0,1000);for(let i=0;i<4;i++)cbCloud(40+i*135,205,165,40,70,la*.22);
+  ground(gy);cbCloud(210,112,22,150,320);
+  const da=P(t,3500,4300);if(da>0){const g=X.createLinearGradient(0,112,0,gy);g.addColorStop(0,hexA(K.blue,.05));g.addColorStop(1,hexA(K.blue,.35));poly([[170,116],[250,116],[290,gy],[130,gy]],g,null,1,da);
+   for(let i=0;i<3;i++){const ph=(t/900+i/3)%1,y=120+ph*100;arrow(190+i*20,y,190+i*20,y+26,K.blue,3,1,da*(1-ph*.3));}}
+  const oa=P(t,7000,8000);arrowPath([[180,gy-10],[120,gy-8],[40,gy-12]],K.blue,3.5,oa);arrowPath([[240,gy-10],[320,gy-8],[420,gy-12]],K.blue,3.5,oa);
+  const bend=P(t,7200,8500)*.9;tree(60,gy,1.1,-bend);tree(100,gy,1,-bend);tree(330,gy,1.1,bend);tree(380,gy,1,bend);house(440,gy,.9,P(t,8000,9000)*1.6);
+  const sa=P(t,10500,12000);if(sa>0){cloud(410,128,150,30,K.cloud2,sa,K.storm2);rotArrow(410,140,40,8,t/300,4.5,K.purple,2,sa,1);}
+  pill(W-6,22,'GEWITTERLINIE',K.text,la*(1-P(t,3300,3600)),'r',11);pill(210,180,'DOWNBURST',K.blue,da,'c',11);
+  pill(110,214,'100+ km/h',K.blue,oa,'c',10.5);pill(410,96,'BÖENWALZE',K.purple,sa,'c',11);pill(240,276,'BÄUME IN EINE RICHTUNG',K.down,P(t,14000,14600),'c',10.5);},
+ box:{was:'Ein Downburst (Fallböe) ist ein kräftiger Abwind aus einer Gewitterwolke, der am Boden auseinanderströmt.',
+  erkennen:['Plötzlicher, sehr starker Windstoß kurz vor dem Regen','Dunkle, walzenförmige Wolke an der Vorderseite (Böenwalze)','Spürbarer Temperatursturz'],
+  bedeutung:'Fallböen sind häufiger als Tornados und für viele Sturmschäden bei Gewittern verantwortlich – auch in Deutschland.',
+  tipp:'Für Flugzeuge beim Starten und Landen sind Fallböen besonders gefährlich. Flughäfen haben deshalb Windmessgeräte, die sie erkennen.'}});
+
+add({id:'wasserhose',area:'tornado',title:'Wasserhosen',sub:'Tornados über dem Wasser',total:18000,
+ steps:[{at:0,text:'Auch über dem Wasser gibt es Tornados: die WASSERHOSEN.'},
+  {at:3500,text:'Unter einer Quellwolke beginnt die Luft über dem warmen Wasser zu rotieren.'},
+  {at:7000,text:'Ein dünner Schlauch senkt sich ab. Unten wirbelt ein Ring aus Gischt auf.'},
+  {at:10500,text:'Die meisten Wasserhosen sind schwächer als Tornados an Land und leben nur etwa 5–10 Minuten.'},
+  {at:14000,text:'Zieht eine Wasserhose an Land, ist sie ein Tornado. Auch an Nord- und Ostsee sieht man sie öfter!'}],
+ draw(t){bg(K.sky1,K.sky2);const sy=212,cx=240+P(t,14000,18000)*120;
+  cloud(240,64,300,60,K.cloud2,1,K.storm2);seaSurf(x=>sy+2.5*Math.sin(x/14+t/400),0,W,H,K.sea,K.sea2);
+  if(P(t,14000,18000)>0){poly([[400,H],[400,sy],[480,sy-14],[480,H]],K.ground);house(450,sy-8,.8);}
+  const ra=P(t,3500,4300)*(1-P(t,7500,8300));rotArrow(240,100,40,8,-t/280,5,K.purple,2.5,ra,-1);
+  const len=P(t,7000,9500),tip=94+len*(sy-94);if(len>0)funnel(cx,92,tip,len,t,K.cloud2,hexA(K.cloud,.85),22);
+  const sp=P(t,9000,9800);if(sp>0){ell(cx,sy,30,7,K.cloud,.6*sp);for(let i=0;i<14;i++){const a=t/200+i*.45,r=18+14*rnd(i);circ(cx+Math.cos(a)*r,sy-4-10*rnd(i+3)+Math.sin(a)*3,2.5,K.cloud,.8*sp);}}
+  pill(330,70,'QUELLWOLKE',K.text,P(t,0,700)*(1-P(t,3300,3600)),'c',11);pill(cx+40,150,'WASSERHOSE',K.purple,P(t,7200,7800),'l',11);
+  pill(cx+40,186,'GISCHT-RING',K.aqua,sp,'l',10.5);pill(120,30,'5–10 MINUTEN',K.gold,P(t,10500,11100),'c',10.5);},
+ box:{was:'Eine Wasserhose ist ein Tornado über dem Meer oder einem großen See.',
+  erkennen:['Dünner, oft heller Schlauch zwischen Wolke und Wasser','Am Wasser ein Ring aus aufgewirbelter Gischt','Häufig im Spätsommer, wenn das Wasser warm ist'],
+  bedeutung:'Für Boote, Badende und Strandbesucher sind Wasserhosen gefährlich. An Land können sie Schäden wie ein schwacher Tornado anrichten.',
+  tipp:'Siehst du eine Wasserhose: Abstand halten und mit dem Boot im rechten Winkel zu ihrer Zugrichtung wegfahren.'}});
+
+add({id:'staubteufel',area:'tornado',title:'Staubteufel',sub:'Wirbel aus heißer Luft – ganz ohne Gewitter',total:18000,
+ steps:[{at:0,text:'An heißen, sonnigen Tagen heizt sich der Boden stark auf – zum Beispiel ein Acker oder ein Sportplatz.'},
+  {at:3500,text:'Die heiße Luft steigt auf. Ein kleiner Windstoß bringt sie zum Drehen.'},
+  {at:7000,text:'Ein STAUBTEUFEL entsteht: ein Wirbel, der Staub, Sand und Blätter hochwirbelt – oft nur wenige Meter breit.'},
+  {at:10500,text:'Wichtig: Ein Staubteufel wächst von UNTEN und hat keine Gewitterwolke. Ein Tornado hängt immer an einer Wolke.'},
+  {at:14000,text:'Meist harmlos und nach wenigen Minuten vorbei. Starke Staubteufel können aber Zelte oder Pavillons umwerfen.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=240;glow(()=>circ(400,46,20,K.sun),K.sun,22);
+  ground(gy,'#b58f5a','#8f6d40');for(let i=0;i<5;i++)line(0,gy+10+i*12,W,gy+14+i*12,'#7a5c34',2,.4);
+  const ha=P(t,0,1200);for(let i=0;i<6;i++){const x=60+i*70,ph=(t/1500+i*.3)%1,pts=[];for(let k=0;k<8;k++)pts.push([x+3*Math.sin(k+t/200),gy-6-ph*50-k*3]);path(pts,K.orange,1.5,.5*ha*(1-ph));}
+  const cx=220+30*Math.sin(t/2500),h=200*P(t,3500,9000),sa=P(t,3500,4500);
+  if(sa>0){rotArrow(cx,gy-12,26,5,-t/200,5,K.orange,2.4,sa*(1-P(t,7000,7600)),-1);
+   for(let i=0;i<110;i++){const f=((i*.618)%1+t/5200)%1,y=gy-f*h,r=(5+f*34)*(.45+.55*rnd(i)),a=t/150+rnd(i+50)*6.283;circ(cx+Math.cos(a)*r*sa,y+Math.sin(a)*r*.22,1.4+2.4*(1-f),'#c9a46a',.6*(1-f*.6));}
+   for(let i=0;i<5;i++){const a=t/160+i*1.2,f=((t/3000)+i/5)%1;ell(cx+Math.cos(a)*(10+f*25),gy-f*h,4,2,K.leaf,.8,a);}}
+  pill(110,gy+26,'HEISSER BODEN',K.orange,ha,'c',10.5);pill(cx+46,gy-120,'STAUBTEUFEL',K.orange,P(t,7000,7600),'l',11);
+  pill(cx,30,'KEINE WOLKE!',K.down,P(t,10500,11100),'c',11);pill(cx+46,gy-30,'VON UNTEN ↑',K.text,P(t,11000,11600),'l',10.5);},
+ box:{was:'Ein Staubteufel (Kleintrombe) ist ein kleiner Luftwirbel, der an heißen Tagen über stark aufgeheiztem Boden entsteht.',
+  erkennen:['Sichtbar durch aufgewirbelten Staub, Sand, Heu oder Blätter','Wolkenloser, sonniger Himmel','Meist nur wenige Meter breit und wenige Minuten lang'],
+  bedeutung:'Staubteufel sind viel schwächer als Tornados. Sie zeigen aber, wie stark die Sonne den Boden aufheizen kann.',
+  tipp:'Auch auf dem Mars gibt es Staubteufel – dort sind sie sogar viel größer als auf der Erde.'}});
+
+const US=[[-124,48],[-123,42],[-120,34],[-117,32.5],[-111,31.3],[-106,31.8],[-104,29.5],[-100,28],[-97,26],[-97,28],[-94,29.5],[-89,29],[-84,30],[-82,26],[-80,25.5],[-80,31],[-76,35],[-74,40],[-70,41.5],[-67,45],[-69,47],[-75,45],[-83,46],[-90,48],[-95,49],[-123,49]];
+const ux=l=>(l+128)/64*W,uy=l=>(53-l)/30*H;
+add({id:'tornadogasse',area:'tornado',title:'Die Tornado-Gasse',sub:'Warum die USA die meisten Tornados haben',total:18500,
+ steps:[{at:0,text:'Die meisten Tornados der Welt gibt es in den USA – über 1.000 pro Jahr.'},
+  {at:3500,text:'Vom Golf von Mexiko strömt warme, feuchte Luft nach Norden.'},
+  {at:7000,text:'Aus Kanada kommt kalte Luft – und von den Rocky Mountains trockene Höhenluft.'},
+  {at:10500,text:'In der Mitte prallen die Luftmassen aufeinander: die TORNADO ALLEY (Tornado-Gasse), etwa von Texas bis Nebraska.'},
+  {at:14000,text:'Hauptsaison ist das Frühjahr (April bis Juni). In Deutschland gibt es jedes Jahr etwa 20 bis 60 Tornados.'}],
+ draw(t){bg(K.sea2,K.sea);rectF(0,0,W,uy(49),K.ground2,.9);poly([[ux(-128),uy(33)],[ux(-117),uy(32.5)],[ux(-106),uy(31.8)],[ux(-97),uy(26)],[ux(-97),uy(18)],[ux(-128),uy(18)]],K.ground2,null,1,.9);
+  poly(US.map(([a,b])=>[ux(a),uy(b)]),K.ground);path([[ux(-114),uy(48)],[ux(-108),uy(40)],[ux(-106),uy(33)]],'#8a7356',8,.6);
+  const wa=P(t,3500,4300);arrowPath([[ux(-92),uy(24)],[ux(-95),uy(31)],[ux(-97),uy(37)]],K.down,5,wa);pill(ux(-82),uy(28.5),'WARM + FEUCHT',K.down,wa,'c',10);
+  const ca=P(t,7000,7800);arrowPath([[ux(-100),uy(52)],[ux(-99),uy(45)],[ux(-98),uy(40)]],K.blue,5,ca);pill(ux(-100),uy(51.5),'KALT',K.blue,ca,'c',10);
+  arrowPath([[ux(-112),uy(37)],[ux(-106),uy(36.5)],[ux(-101),uy(36)]],K.orange,4,ca);pill(ux(-115),uy(34),'TROCKEN',K.orange,ca,'c',10);
+  const za=P(t,10500,11300);if(za>0){X.save();X.globalAlpha=za*(.35+.15*Math.sin(t/250));X.fillStyle=K.purple;X.beginPath();X.ellipse(ux(-98),uy(37),48,72,.15,0,7);X.fill();X.restore();
+   [[-99,34],[-97,38],[-100,40]].forEach(([a,b],i)=>{const x=ux(a),y=uy(b);for(let k=0;k<5;k++)line(x-8+k*1.6,y-12+k*5,x+8-k*1.6,y-12+k*5,K.text,2,za);});}
+  pill(ux(-84),uy(38),'TORNADO ALLEY',K.purple,za,'c',11);pill(240,H-16,'USA: 1.000+ PRO JAHR',K.gold,P(t,0,700)*(1-P(t,13800,14100)),'c',10.5);
+  pill(240,H-16,'DEUTSCHLAND: 20–60 PRO JAHR',K.up,P(t,14000,14600),'c',10.5);},
+ qimg:false,
+ box:{was:'Die Tornado Alley ist ein Gebiet in der Mitte der USA mit besonders vielen und starken Tornados.',
+  erkennen:['Flaches Land ohne Gebirge zwischen Golf von Mexiko und Kanada','Warme Feuchtluft von Süden, kalte Luft von Norden, trockene Luft von Westen','Hauptsaison im Frühjahr'],
+  bedeutung:'Nirgendwo sonst treffen so gegensätzliche Luftmassen so oft aufeinander. Darum entstehen dort viele Superzellen.',
+  tipp:'In der Tornado Alley haben viele Häuser einen Schutzraum im Keller oder einen „Storm Shelter“ im Garten.'}});
+
+add({id:'vorhersage',area:'hurrikan',title:'Hurrikanjäger & Vorhersage',sub:'Wie man Hurrikane beobachtet und vorhersagt',total:18500,
+ steps:[{at:0,text:'Wettersatelliten beobachten Hurrikane rund um die Uhr aus dem All.'},
+  {at:3500,text:'Spezielle Flugzeuge – die HURRIKANJÄGER – fliegen mitten durch den Sturm bis ins Auge.'},
+  {at:7000,text:'Sie werfen Messsonden ab, die auf dem Weg zum Meer Wind, Luftdruck und Temperatur messen.'},
+  {at:10500,text:'Computer berechnen daraus die Zugbahn. Weil sie unsicher ist, zeigt man einen TRICHTER (Vorhersagekegel).'},
+  {at:14000,text:'So können Küstenorte schon Tage vorher gewarnt und evakuiert werden.'}],
+ draw(t){if(t<10500){bg(K.sky1,K.sky2);const sy=250;seaSurf(x=>sy+2*Math.sin(x/12+t/300),0,W,H,K.sea,K.sea2);
+   cbCloud(150,sy-10,60,130,0);cbCloud(330,sy-10,60,130,0);rectF(214,60,52,sy-70,K.sky2,.5);
+   const sx=mix(20,460,(t%10500)/10500);rectF(sx-10,14,20,10,K.mute);rectF(sx-30,16,18,6,K.blue);rectF(sx+12,16,18,6,K.blue);line(sx,24,sx,30,K.mute,2);
+   const sa=P(t,0,800);for(let k=0;k<3;k++)ring(sx,30,8+((t/30+k*14)%40),K.gold,1.2,sa*.5*(1-((t/30+k*14)%40)/40));pill(sx+40,24,'SATELLIT',K.gold,sa,'l',10);
+   const pa=P(t,3500,4200);if(pa>0){const px=mix(-30,510,Lp(t,3500,10400)),py=120+6*Math.sin(t/120);poly([[px-20,py],[px+20,py-2],[px+24,py+2],[px-20,py+4]],K.house,null,1,pa);poly([[px-4,py],[px+6,py],[px-8,py+14]],K.wall2,null,1,pa);poly([[px-18,py],[px-14,py-10],[px-10,py]],K.wall2,null,1,pa);
+    pill(clamp(px,60,420),96,'HURRIKANJÄGER',K.down,pa,'c',10.5);}
+   if(t>7000)for(let k=0;k<3;k++){const tt=t-7000-k*900;if(tt<0)continue;const x=mix(-30,510,Lp(7000+k*900,3500,10400)),y=126+tt*.035;if(y>sy)continue;line(x,y,x,y-8,K.text,1,.8);ell(x,y-11,5,3,K.down,.9);circ(x,y,2,K.text);}
+   pill(240,sy-30,'MESSSONDEN',K.text,P(t,7200,7800),'c',10);}
+  else{bg(K.sea2,K.sea);poly([[380,0],[W,0],[W,H],[400,H],[420,220],[395,150],[410,80]],K.ground);
+   const ca=P(t,10500,11800);poly([[120,170],[400,40],[440,260]],hexA(K.down,.22),K.down,1.5,ca);
+   const tr=[[60,190],[150,170],[240,155],[330,145],[420,140]];tr.forEach(([x,y],i)=>circ(x,y,4,K.text,P(t,10700+i*250,11000+i*250)));
+   hurrSym(60+P(t,10500,18500)*60,190-P(t,10500,18500)*16,14,K.blue,1,-t/600,-1);
+   pill(260,40,'VORHERSAGE-KEGEL',K.down,ca,'c',10.5);pill(W-6,280,'WARNUNG: EVAKUIEREN',K.gold,P(t,14000,14600),'r',10.5);}},
+ qimg:false,
+ box:{was:'Hurrikane werden mit Satelliten, Flugzeugen, Bojen und Computermodellen überwacht und vorhergesagt.',
+  erkennen:['Satelliten: Bilder und Messungen aus dem All','Hurrikanjäger: Flugzeuge mit Messsonden','Vorhersagekegel: zeigt, wo das Zentrum wahrscheinlich hinzieht'],
+  bedeutung:'Die Zugbahn lässt sich heute recht gut 3–5 Tage vorhersagen. Schwieriger ist es, die Stärke genau vorherzusagen.',
+  tipp:'Achtung: Der Kegel zeigt nur das mögliche Zentrum. Sturm, Regen und Sturmflut reichen oft weit über den Kegel hinaus!'}});
+
+const ax=l=>(l+100)/92*W,ay=l=>(52-l)/48*H;
+add({id:'lebenslauf',area:'hurrikan',title:'Lebenslauf eines Hurrikans',sub:'Von der Gewitterwolke vor Afrika bis zum Ende',total:18500,
+ steps:[{at:0,text:'Viele Atlantik-Hurrikane beginnen als Haufen von Gewittern vor der Küste Westafrikas.'},
+  {at:3500,text:'Über dem warmen Atlantik ordnen sich die Gewitter zu einem Wirbel: ein TROPISCHES TIEF.'},
+  {at:7000,text:'Ab 63 km/h wird es zum TROPISCHEN STURM und bekommt einen Namen.'},
+  {at:10500,text:'Ab 119 km/h ist es ein HURRIKAN. Er zieht nach Westen und biegt oft nach Norden ab.'},
+  {at:14000,text:'Über Land oder kaltem Wasser fehlt ihm der Treibstoff – er wird schwächer und löst sich auf.'}],
+ draw(t){bg(K.sea2,K.sea);WORLD.forEach(p=>poly(p.map(([a,b])=>[ax(a),ay(b)]),K.ground,null,1,.95));
+  const tr=[[-18,12],[-35,13],[-50,15],[-62,18],[-74,24],[-78,32],[-70,40],[-55,47]].map(([a,b])=>[ax(a),ay(b)]);
+  const p=Lp(t,300,17500),n=tr.length-1,k=Math.min(n-1,Math.floor(p*n)),f=p*n-k,pos=[mix(tr[k][0],tr[k+1][0],f),mix(tr[k][1],tr[k+1][1],f)];
+  path(tr.slice(0,k+1).concat([pos]),K.text,2,.6,[4,4]);
+  const st=t<3500?0:t<7000?1:t<10500?2:t<14000?3:4,size=[6,9,12,16,10][st],col=[K.mute,K.aqua,K.gold,K.down,K.mute][st];
+  if(st===0){for(let i=0;i<5;i++)circ(pos[0]+(rnd(i)-.5)*22,pos[1]+(rnd(i+5)-.5)*14,5,K.cloud,.85);}else hurrSym(pos[0],pos[1],size,col,1,-t/(st===3?300:600),-1);
+  const lab=['GEWITTERHAUFEN','TROPISCHES TIEF','TROPISCHER STURM','HURRIKAN','SCHWÄCHER'][st];pill(clamp(pos[0],70,410),pos[1]-size-16,lab,col,1,'c',10.5);
+  pill(ax(-10),ay(22),'AFRIKA',K.text,.8,'c',9.5);pill(ax(-92),ay(40),'USA',K.text,.8,'c',9.5);},
+ qimg:false,
+ box:{was:'Ein Hurrikan durchläuft mehrere Stufen: Störung, tropisches Tief, tropischer Sturm, Hurrikan – und schließlich die Auflösung.',
+  h2:'So geht’s',
+  erkennen:['Tropisches Tief: unter 63 km/h','Tropischer Sturm: 63–118 km/h, bekommt einen Namen','Hurrikan: ab 119 km/h'],
+  bedeutung:'Ein Hurrikan kann ein bis zwei Wochen leben und Tausende Kilometer zurücklegen.',
+  tipp:'Manche ehemaligen Hurrikane ziehen als kräftige Sturmtiefs bis nach Europa – und bringen auch uns Sturm und Regen.'}});
+
+add({id:'geysir',area:'vulkan',title:'Geysire & heiße Quellen',sub:'Wasser, das in die Luft schießt',total:18500,
+ steps:[{at:0,text:'Wo Magma nah unter der Oberfläche liegt, wird das Grundwasser stark erhitzt.'},
+  {at:3500,text:'In einem engen Kanal kann das Wasser nicht frei sprudeln. Unten wird es über 100 °C heiß – der Druck verhindert das Kochen.'},
+  {at:7000,text:'Dann bilden sich Dampfblasen und drücken etwas Wasser oben hinaus. Der Druck sinkt – und schlagartig verdampft alles.'},
+  {at:10000,text:'Eine Fontäne aus Wasser und Dampf schießt in die Luft: ein GEYSIR!'},
+  {at:14000,text:'Danach füllt sich der Kanal langsam wieder – bis zum nächsten Ausbruch. Berühmt: der Strokkur auf Island.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=150;const eg=X.createLinearGradient(0,gy,0,H);eg.addColorStop(0,K.earth);eg.addColorStop(1,K.earth2);X.fillStyle=eg;X.fillRect(0,gy,W,H-gy);rectF(0,gy-4,W,5,K.ground);
+  const mg=X.createLinearGradient(0,250,0,H);mg.addColorStop(0,hexA(K.lava,0));mg.addColorStop(1,K.lava);X.fillStyle=mg;X.fillRect(0,240,W,H-240);
+  const ch=[[240,gy],[236,180],[248,205],[232,232],[244,258]];path(ch,K.earth2,14);
+  const heat=P(t,0,3500),lvl=t<10000?1:t<13500?0:P(t,13500,18000);path(ch.slice(0).filter((p,i)=>i>=Math.round((1-lvl)*3)),K.blue,9,.95);
+  if(t>7000&&t<10200)for(let i=0;i<8;i++){const y=258-((t/6+i*14)%100);circ(240+3*Math.sin(y/8),y,2+(258-y)/30,'#ffffff',.8);}
+  thermo(300,170,70,clamp(.3+heat*.6),K.down,t<3500?'':'> 100 °C');
+  const fa=P(t,10000,10400)*(1-P(t,12800,13600));if(fa>0){for(let i=0;i<70;i++){const ph=((t-10000)/700+rnd(i))%1,h=140*fa,y=gy-ph*h,x=240+(rnd(i+3)-.5)*ph*30;circ(x,y,2+ph*5,i%3?'#e6f4ff':K.blue,.8*(1-ph*.5));}
+   for(let i=0;i<10;i++){const ph=((t-10000)/1400+rnd(i+9))%1;circ(240+(rnd(i)-.5)*60*ph,gy-140*fa-ph*30,10+ph*18,K.cloud,.35*(1-ph));}}
+  pill(120,272,'MAGMA',K.lava,P(t,0,700),'c',10.5);pill(222,gy+40,'ENGER KANAL',K.text,P(t,3500,4100)*(1-P(t,9800,10100)),'r',10.5);
+  pill(330,50,'GEYSIR!',K.blue,P(t,10200,10800),'c',11);pill(330,50,'FÜLLT SICH WIEDER …',K.text,P(t,14000,14600),'c',10.5);},
+ box:{was:'Ein Geysir ist eine heiße Quelle, die in regelmäßigen Abständen eine Fontäne aus Wasser und Dampf ausstößt.',
+  erkennen:['Nur in Vulkangebieten: Island, Yellowstone (USA), Neuseeland','Dampfende Becken und heiße Quellen in der Nähe','Ausbrüche in Abständen von Minuten bis Stunden'],
+  bedeutung:'Geysire zeigen, dass unter der Oberfläche noch Magma oder sehr heißes Gestein liegt. Die Wärme nutzt man in Island auch zum Heizen (Geothermie).',
+  tipp:'Der Strokkur auf Island bricht etwa alle 5–10 Minuten aus. Das Wort „Geysir“ kommt vom „Großen Geysir“ gleich nebenan.'}});
+
+add({id:'aschewolke',area:'vulkan',title:'Vulkanasche & Flugverkehr',sub:'Warum Flugzeuge nicht durch Asche fliegen',total:18500,
+ steps:[{at:0,text:'Bei einem Ausbruch schießt Vulkanasche bis zu 20 km hoch – bis in die Höhe, in der Flugzeuge fliegen.'},
+  {at:3500,text:'Der Wind trägt die Aschewolke Hunderte oder sogar Tausende Kilometer weit.'},
+  {at:7000,text:'Asche besteht aus winzigen Glas- und Gesteinssplittern. Im heißen Triebwerk schmelzen sie und verkleben es.'},
+  {at:10500,text:'Darum werden Lufträume gesperrt. 2010 legte der Vulkan Eyjafjallajökull auf Island tagelang den Flugverkehr in Europa lahm.'},
+  {at:14000,text:'Asche ist auch am Boden gefährlich: für Lunge, Dächer und Maschinen.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=250;ground(gy);poly([[10,gy],[70,150],[90,150],[150,gy]],K.rock);
+  const ca=P(t,0,2000);for(let k=0;k<12;k++){const f=k/12;circ(80+Math.sin(k+t/400)*5,150-f*110*ca,8+f*12,K.cloud2,.85*ca);}
+  const front=mix(90,520,P(t,3000,11000));for(let x=90;x<front;x+=14){const k=Math.floor(x/14);circ(x,48+10*Math.sin(k*1.7)+4*Math.sin(t/500+k),14+8*rnd(k),mixCol(K.cloud2,'#6b6f78',rnd(k+2)),.75);}
+  pill(W-6,24,'ASCHEWOLKE →',K.text,P(t,3500,4100)*(1-P(t,10300,10600)),'r',10.5);
+  const pa=P(t,5000,5600);if(pa>0){const turn=P(t,10500,12500),px=mix(470,360,Lp(t,5000,10500))+turn*120,py=110-turn*10,d=turn>.5?1:-1;
+   X.save();X.translate(px,py);X.scale(d,1);poly([[-22,0],[18,-2],[22,2],[-22,4]],K.house,null,1,pa);poly([[2,0],[-8,0],[6,14]],K.wall2,null,1,pa);poly([[16,0],[12,-10],[8,0]],K.wall2,null,1,pa);X.restore();}
+  const ia=P(t,7000,7600)*(1-P(t,10300,10700));if(ia>0){circ(200,170,40,K.pillBg,ia);ring(200,170,40,K.down,2,ia);ring(200,170,26,K.mute,6,ia);for(let i=0;i<14;i++){const a=t/300+i;circ(200+Math.cos(a)*18*rnd(i),170+Math.sin(a)*18*rnd(i+3),2,'#ff7a3a',ia);}pill(200,224,'TRIEBWERK VERKLEBT',K.down,ia,'c',10);}
+  const ga=P(t,10500,11200);if(ga>0){rrect(150,140,180,40,10,K.pillBg,K.down,2.5,ga);txt(240,160,'LUFTRAUM GESPERRT',K.down,13,'center',800,ga);}
+  pill(240,276,'ISLAND 2010: EUROPA STEHT STILL',K.gold,P(t,11000,11600)*(1-P(t,13800,14100)),'c',10);
+  const ba=P(t,14000,15000);for(let i=0;i<30;i++){const x=W*rnd(i),y=60+((t*.06+rnd(i+1)*300)%(gy-60));circ(x,y,1.5,K.mute,ba*.8);}pill(240,276,'ASCHE AM BODEN: MASKE TRAGEN',K.text,ba,'c',10);},
+ box:{was:'Vulkanasche sind winzige Teilchen aus zersplittertem Gestein und Vulkanglas – kein Ruß und keine Holzasche.',
+  erkennen:['Graue bis schwarze Wolke, die vom Vulkan wegtreibt','Feiner Staub, der sich überall ablagert','Satelliten und Messflugzeuge verfolgen die Ausbreitung'],
+  bedeutung:'Asche kann Flugzeugtriebwerke ausfallen lassen. Deshalb gelten strenge Regeln für den Flugverkehr bei Vulkanausbrüchen.',
+  tipp:'2010 fielen wegen der Aschewolke rund 100.000 Flüge aus – Millionen Reisende saßen fest.'}});
+
+add({id:'supervulkan',area:'vulkan',title:'Supervulkane',sub:'Die größten Vulkane der Erde',total:18500,
+ steps:[{at:0,text:'Ein SUPERVULKAN kann bei einem Ausbruch über 1.000 km³ Gestein und Asche ausstoßen.'},
+  {at:3500,text:'Unter ihm liegt eine riesige Magmakammer. Statt eines Bergs sieht man oft nur einen gewaltigen Kessel: die CALDERA.'},
+  {at:7000,text:'Zum Vergleich: Der Vesuv warf im Jahr 79 n. Chr. nur wenige km³ aus – ein Supervulkan mehrere Hundert Mal so viel.'},
+  {at:10500,text:'Bekannte Supervulkane sind Yellowstone (USA), Toba (Indonesien) und Taupō (Neuseeland).'},
+  {at:14000,text:'Supereruptionen sind extrem selten – die letzte war vor rund 26.000 Jahren in Neuseeland. Ihre Asche kann weltweit das Klima abkühlen.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=150;const eg=X.createLinearGradient(0,gy,0,H);eg.addColorStop(0,K.earth);eg.addColorStop(1,K.earth2);X.fillStyle=eg;X.fillRect(0,gy,W,H-gy);
+  poly([[0,gy],[60,gy-14],[90,gy-6],[110,gy+8],[370,gy+8],[390,gy-6],[420,gy-14],[W,gy]],K.ground);rectF(110,gy+2,260,6,K.sea,.8);
+  const ma=P(t,3500,4500);if(ma>0){const g=X.createRadialGradient(240,240,10,240,240,170);g.addColorStop(0,K.magma);g.addColorStop(1,K.lava);X.globalAlpha=ma;X.fillStyle=g;X.beginPath();X.ellipse(240,236,170,40,0,0,7);X.fill();X.globalAlpha=1;}
+  const ca=P(t,3500,4200);line(110,gy-24,370,gy-24,K.text,1.5,ca);line(110,gy-30,110,gy-18,K.text,1.5,ca);line(370,gy-30,370,gy-18,K.text,1.5,ca);pill(240,gy-24,'CALDERA · BIS 70 km',K.text,ca,'c',10);
+  pill(240,236,'RIESIGE MAGMAKAMMER',K.inner,ma,'c',10.5);
+  const va=P(t,7000,7800)*(1-P(t,10300,10600));if(va>0){rrect(40,10,400,104,10,K.pillBg,K.mute,1,va);rectF(100,86,6,6,K.orange,va);txt(103,102,'Vesuv 79',K.text,10,'center',700,va);const s=48*P(t,7600,9500);rectF(300-s/2,92-s,s,s,K.down,va);txt(300,102,'Supervulkan',K.text,10,'center',700,va);}
+  const na=P(t,10500,11200)*(1-P(t,13800,14100));['YELLOWSTONE','TOBA','TAUPŌ'].forEach((n,i)=>pill(90+i*150,40,n,K.orange,na,'c',10.5));
+  pill(240,40,'SEHR SELTEN – KLIMA KÜHLT AB',K.blue,P(t,14000,14600),'c',10.5);},
+ qimg:false,
+ box:{was:'Ein Supervulkan ist ein Vulkan, der zu einem Ausbruch der höchsten Stufe fähig ist: mehr als 1.000 km³ ausgeworfenes Material.',
+  erkennen:['Keine typische Bergform, sondern ein riesiger Kessel (Caldera)','Heiße Quellen, Geysire und Bodenhebungen','Darunter eine gewaltige Magmakammer'],
+  bedeutung:'Eine Supereruption würde ganze Regionen unter Asche begraben und könnte weltweit für einige Jahre kühlere Sommer bringen.',
+  tipp:'Der Yellowstone-Nationalpark liegt mitten in einer Caldera – seine berühmten Geysire werden von der Magmakammer darunter beheizt.'}});
+
+add({id:'erdbebensicher',area:'erdbeben',title:'Erdbebensicheres Bauen',sub:'Häuser, die nicht einstürzen',total:18500,
+ steps:[{at:0,text:'Nicht das Beben selbst ist das Gefährlichste – sondern Gebäude, die dabei einstürzen.'},
+  {at:3500,text:'Ein starres Haus ohne Schutz schwingt mit. Es entstehen Risse – im schlimmsten Fall stürzt es ein.'},
+  {at:7000,text:'Erdbebensicher: Das Haus steht auf GUMMI-LAGERN. Sie schlucken die Bewegung, das Haus bleibt fast ruhig.'},
+  {at:10500,text:'Dazu kommen Stahlträger, Querstreben und in Hochhäusern riesige Pendel (Schwingungstilger), die gegenhalten.'},
+  {at:14000,text:'Japan und Kalifornien haben strenge Bauvorschriften. Dort überstehen viele Gebäude auch starke Beben.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=246,sh=t>1200?Math.sin(t/80)*6*P(t,1200,2200):0;
+  X.save();X.translate(sh,0);ground(gy);for(let i=0;i<10;i++)line(i*50,gy+8,i*50+20,gy+8,K.ground2,3,.6);X.restore();
+  const col=P(t,4500,6500),lx=120+sh*1.2,hh=150*(1-col*.62);X.save();X.translate(lx,gy);X.rotate(sh*.012+col*.12);
+  rectF(-45,-hh,90,hh,K.house);for(let r=0;r<4;r++)for(let c=0;c<3;c++)if(-hh+12+r*34<-10)rectF(-36+c*28,-hh+12+r*34*(1-col*.5),16,16,K.sea2);
+  if(t>3500){path([[-20,-hh],[-10,-hh+40],[-24,-hh+80]],K.text,1.5,P(t,3500,4300));path([[30,-hh+30],[18,-hh+70],[34,-hh+110]],K.text,1.5,P(t,4000,4800));}X.restore();
+  if(col>0)for(let i=0;i<10;i++)circ(lx+(rnd(i)-.5)*110,gy-4-rnd(i+2)*20*col,4+4*rnd(i+4),K.wall2,col*.8);
+  pill(120,40,'OHNE SCHUTZ',K.down,P(t,3500,4100),'c',10.5);
+  const ra=P(t,7000,7800),rx=340+sh*(1-ra*.85);X.save();X.translate(rx,gy);rectF(-48,-10,96,10,K.mute);if(ra>0)for(let k=0;k<4;k++)rrect(-44+k*24,-10,18,10,3,'#30343b',null,1,ra);
+  rectF(-45,-160,90,150,K.house);for(let r=0;r<4;r++)for(let c=0;c<3;c++)rectF(-36+c*28,-150+r*34,16,16,K.sea2);
+  const ba=P(t,10500,11300);if(ba>0){line(-45,-160,45,-10,K.gold,2.5,ba);line(45,-160,-45,-10,K.gold,2.5,ba);const sw=-sh*2.2;line(0,-160,sw,-136,K.text,2,ba);circ(sw,-132,7,K.down,ba);}X.restore();
+  pill(340,236+30,'GUMMI-LAGER',K.up,ra,'c',10.5);pill(340,40,'ERDBEBENSICHER',K.up,ra,'c',10.5);pill(W-6,118,'PENDEL',K.down,P(t,10800,11400),'r',10);},
+ box:{was:'Erdbebensichere Gebäude sind so gebaut, dass sie die Bodenbewegungen aushalten oder abfedern, ohne einzustürzen.',
+  erkennen:['Gummi- oder Gleitlager im Fundament (Basisisolation)','Stahlträger und diagonale Streben in den Wänden','Schwingungstilger: große Pendel oben im Hochhaus'],
+  bedeutung:'Gute Bauweise rettet bei Erdbeben die meisten Leben. Deshalb sind die Folgen gleich starker Beben je nach Land sehr unterschiedlich.',
+  tipp:'Im Hochhaus „Taipei 101“ in Taiwan hängt ein 660 Tonnen schweres Kugelpendel – man kann es sogar besichtigen.'}});
+
+add({id:'fruehwarnung',area:'erdbeben',title:'Frühwarnsysteme',sub:'Sekunden, die Leben retten',total:18500,
+ steps:[{at:0,text:'Ein Erdbeben beginnt unter dem Meer. Messstationen in der Nähe spüren sofort die schnelle P-Welle.'},
+  {at:3500,text:'Computer berechnen in Sekunden Ort und Stärke – und schicken eine Warnung per Funk und Internet los.'},
+  {at:6500,text:'Die Warnung ist viel schneller als die zerstörerische S-Welle: Funk ist fast lichtschnell, die S-Welle nur 3,5 km/s.'},
+  {at:10000,text:'In der Stadt bleiben so einige Sekunden bis zu einer Minute: Handys warnen, Züge bremsen, Aufzüge halten an.'},
+  {at:14000,text:'Für Tsunamis gibt es BOJEN im Meer. Sie melden ungewöhnliche Wellen, damit Küsten rechtzeitig gewarnt werden.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=120;const eg=X.createLinearGradient(0,gy,0,H);eg.addColorStop(0,K.earth);eg.addColorStop(1,K.earth2);X.fillStyle=eg;X.fillRect(0,gy,W,H-gy);
+  rectF(0,gy-26,110,26,K.sea);rectF(110,gy-4,W-110,5,K.ground);const hx=50,hy=260,stx=150;
+  X.save();X.beginPath();X.rect(0,gy,W,H-gy);X.clip();if(t>300){const rp=(t-300)*.06,rs=(t-300)*.022;ring(hx,hy,rp,K.blue,2.5,clamp(1.3-rp/520),[3,4]);ring(hx,hy,rs,K.down,3,clamp(1.4-rs/520));}X.restore();
+  glow(()=>circ(hx,hy,6,K.gold),K.gold,12);
+  rectF(stx-3,gy-30,6,30,K.mute);circ(stx,gy-32,4,K.gold);pill(stx,gy-50,'STATION',K.text,P(t,0,700),'c',10);
+  const wa=P(t,3500,4000);if(wa>0)for(let k=0;k<4;k++){const r=((t-3500)/4+k*40)%260;X.save();X.globalAlpha=wa*(1-r/260)*.8;X.strokeStyle=K.gold;X.lineWidth=2;X.beginPath();X.arc(stx,gy-32,r,-.6,.1);X.stroke();X.restore();}
+  for(let i=0;i<4;i++){const x=340+i*34,h=40+20*rnd(i+3);rectF(x,gy-h,26,h,K.house);rectF(x+6,gy-h+8,6,6,K.sea2);rectF(x+14,gy-h+8,6,6,K.sea2);}
+  const tS=300+Math.hypot(380-hx,hy-gy)/.022,left=Math.max(0,(tS-t)/1000);
+  const pa=P(t,4500,5000);if(pa>0&&t<tS){rrect(250,30,58,88,8,K.storm1,K.mute,1.5,pa);rrect(256,40,46,60,4,K.down,null,1,pa*(.6+.4*Math.sin(t/120)));txt(279,62,'⚠',K.text,18,'center',800,pa);txt(279,86,'BEBEN!',K.text,9,'center',800,pa);}
+  pill(380,20,t<tS?'NOCH '+fmt(Math.ceil(left))+' s':'S-WELLE DA',t<tS?K.up:K.down,P(t,6500,7000),'c',11);
+  const ba=P(t,14000,14800);if(ba>0){const by=gy-30+3*Math.sin(t/300);rectF(52,by-14,4,14,K.mute,ba);ell(54,by,12,5,K.gold,ba);circ(54,by-16,3,K.down,ba*(.5+.5*Math.sin(t/150)));}
+  pill(120,gy+40,'TSUNAMI-BOJE',K.gold,ba,'c',10);},
+ qimg:false,
+ box:{was:'Ein Frühwarnsystem erkennt ein Erdbeben in den ersten Sekunden und warnt, bevor die starken Erschütterungen ankommen.',
+  erkennen:['Dichtes Netz aus Messstationen','Warnung per Handy, Radio, Fernsehen und Sirenen','Automatisches Bremsen von Zügen und Stoppen von Aufzügen'],
+  bedeutung:'Schon 10 Sekunden Vorwarnung reichen, um unter einen Tisch zu gehen, Gasleitungen zu schließen oder Operationen zu unterbrechen.',
+  tipp:'In Deutschland warnen die Apps NINA und WarnWetter (DWD) vor Unwettern und anderen Gefahren – am besten installieren.'}});
+
+/* ===================== PAKET 2: Winter, Wasser, Hitze, Himmel ===================== */
+function flake(x,y,r,c,a=1,rot=0){if(a<=0)return;for(let k=0;k<3;k++){const an=rot+k*Math.PI/3;line(x-Math.cos(an)*r,y-Math.sin(an)*r,x+Math.cos(an)*r,y+Math.sin(an)*r,c,Math.max(1,r/3),a);}}
+function earthBg(gy){const eg=X.createLinearGradient(0,gy,0,H);eg.addColorStop(0,K.earth);eg.addColorStop(1,K.earth2);X.fillStyle=eg;X.fillRect(0,gy,W,H-gy);}
+function flames(x,y,w,h,t,a=1,seed=0){if(a<=0||h<=0)return;for(let i=0;i<5;i++){const fx=x+(i-2)*w/5,fh=h*(.6+.4*Math.sin(t/120+i*1.7+seed)),fw=w/3;
+ X.globalAlpha=a;const g=X.createLinearGradient(0,y-fh,0,y);g.addColorStop(0,'rgba(255,220,90,0)');g.addColorStop(.4,'#ffb02e');g.addColorStop(1,'#ff4a1c');X.fillStyle=g;X.beginPath();X.moveTo(fx-fw/2,y);X.quadraticCurveTo(fx-fw/2,y-fh*.5,fx+Math.sin(t/90+i)*4,y-fh);X.quadraticCurveTo(fx+fw/2,y-fh*.5,fx+fw/2,y);X.closePath();X.fill();X.globalAlpha=1;}}
+function stars(n,a=1,seed=0){for(let i=0;i<n;i++)circ(W*rnd(i+seed),H*.7*rnd(i+seed+99),.6+rnd(i+seed+7)*.9,'#ffffff',a*(.4+.6*rnd(i+seed+3)));}
+
+function overLand(landFn,fn){X.save();X.beginPath();X.moveTo(0,0);X.lineTo(W,0);for(let x=W;x>=0;x-=4)X.lineTo(x,landFn(x));X.closePath();X.clip();fn();X.restore();}
+/* ---------- WINTER ---------- */
+add({id:'schneesturm',area:'winter',title:'Schneesturm',sub:'Wenn Wind und Schnee zusammenkommen',total:18500,
+ steps:[{at:0,text:'Schnee entsteht in Wolken: Winzige Eiskristalle wachsen und kleben zu Schneeflocken zusammen.'},
+  {at:3500,text:'Kommt starker Wind dazu, fliegt der Schnee fast waagerecht: ein SCHNEESTURM.'},
+  {at:7000,text:'Die Sicht sinkt auf wenige Meter – alles wird weiß. Man nennt das „White-out“.'},
+  {at:10500,text:'Der Wind türmt den Schnee zu meterhohen SCHNEEVERWEHUNGEN auf. Straßen werden unpassierbar.'},
+  {at:14000,text:'Bei Schneesturm drinnen bleiben. Steckst du im Auto fest: im Auto bleiben und den Auspuff von Schnee freihalten.'}],
+ draw(t){bg(K.storm2,K.sky2);const gy=240;cloud(240,24,560,60,K.cloud2,1,K.storm2);rectF(0,gy,W,H-gy,K.snow);
+  house(130,gy,1.4);const cx=330;rrect(cx-34,gy-20,68,16,6,K.down);rrect(cx-20,gy-32,40,14,5,K.down);circ(cx-20,gy-4,6,K.storm1);circ(cx+20,gy-4,6,K.storm1);
+  const dr=P(t,10500,14500);poly([[60,gy],[95,gy-30*dr],[105,gy-34*dr],[150,gy-8*dr],[190,gy]],K.snow);poly([[290,gy],[350,gy-26*dr],[372,gy-30*dr],[400,gy]],K.snow);
+  const w=P(t,3500,5500);for(let i=0;i<110;i++){const sp=.03+.03*rnd(i),vx=w*(.25+.15*rnd(i+4)),x=(W*rnd(i)+t*vx+20*Math.sin(t/900+i))%(W+20)-10,y=(40+rnd(i+2)*300+t*sp)%(gy-36)+36;
+   if(w>.2)line(x,y,x-10*w,y-2*w,K.snow,1.6,.9);else circ(x,y,1.8+rnd(i+6),K.snow,.95);}
+  rectF(0,0,W,H,K.snow,.55*P(t,7000,9000)*(1-.4*P(t,10500,12000)));
+  pill(240,96,'SCHNEEFLOCKEN',K.ice,P(t,0,700)*(1-P(t,3300,3600)),'c',10.5);pill(240,96,'STURM →',K.ice,w*(1-P(t,6800,7100)),'c',11);
+  pill(240,96,'WHITE-OUT',K.down,P(t,7000,7600)*(1-P(t,10300,10600)),'c',11);pill(240,96,'SCHNEEVERWEHUNGEN',K.ice,P(t,10600,11200),'c',10.5);
+  pill(330,gy+24,'IM AUTO BLEIBEN',K.up,P(t,14000,14600),'c',10.5);},
+ box:{was:'Ein Schneesturm (Blizzard) ist starker Schneefall zusammen mit Sturm und sehr schlechter Sicht.',
+  erkennen:['Schnee fliegt waagerecht statt senkrecht','Sicht unter 1 km, oft nur wenige Meter','Schneeverwehungen an Häusern, Zäunen und Straßen'],
+  bedeutung:'Schneestürme legen den Verkehr lahm, lassen Stromleitungen reißen und machen Orte für Tage unerreichbar.',
+  tipp:'Für den Winter im Auto: Decke, Schaufel, Handyladekabel, warme Getränke und etwas zu essen dabeihaben.'}});
+
+add({id:'lawine',area:'winter',title:'Lawinen',sub:'Wenn der Schnee am Hang abbricht',total:18500,
+ steps:[{at:0,text:'Auf einem steilen Hang liegen viele Schneeschichten übereinander – jede stammt von einem anderen Schneefall.'},
+  {at:3500,text:'Gefährlich ist eine lockere SCHWACHSCHICHT tief in der Schneedecke. Sie hält die Schichten darüber kaum fest.'},
+  {at:7000,text:'Schon das Gewicht eines Skifahrers kann reichen: Die Schneedecke bricht wie eine Glasplatte.'},
+  {at:10500,text:'Ein SCHNEEBRETT rutscht ab und wird zur Lawine – mit 100 km/h und mehr.'},
+  {at:14000,text:'Lawinengefahr hat 5 Stufen. Abseits der Pisten nur mit Ausrüstung: Lawinen-Piepser, Sonde und Schaufel.'}],
+ draw(t){bg(K.sky1,K.sky2);const y=x=>40+x*.46;poly([[0,40],[W,40+W*.46],[W,H],[0,H]],K.rock);
+  const lay=[[K.snow,0],['#d7e3f0',8],['#c3d4e6',16],[K.down,22],['#b6c7da',26]];
+  const slip=P(t,10500,13500),crack=P(t,7000,7600),sx=170,ex=380,off=slip*170;
+  for(let k=lay.length-1;k>=0;k--){const[c,d]=lay[k];const th=k===3?4:8;const ish=k<3;const a=k===3?P(t,3500,4300):1;
+   const pts=[];for(let x=0;x<=W;x+=10)pts.push([x,y(x)-34+d]);pts.push([W,y(W)-34+d+th],[0,y(0)-34+d+th]);
+   if(!(ish&&slip>0))poly(pts,c,null,1,a||(k===3?0:1));else{const L=[[0,y(0)-34+d],[sx,y(sx)-34+d],[sx,y(sx)-34+d+th],[0,y(0)-34+d+th]],R=[[ex,y(ex)-34+d],[W,y(W)-34+d],[W,y(W)-34+d+th],[ex,y(ex)-34+d+th]];poly(L,c);poly(R,c);
+    X.save();X.translate(off,off*.46);poly([[sx,y(sx)-34+d],[ex,y(ex)-34+d],[ex,y(ex)-34+d+th],[sx,y(sx)-34+d+th]],c,null,1,1-slip*.5);X.restore();}}
+  if(crack>0&&slip<.05)path([[sx,y(sx)-36],[sx+3,y(sx)-28],[sx-2,y(sx)-20],[sx+1,y(sx)-12]],K.down,2.5,crack);
+  if(slip>0)for(let i=0;i<26;i++){const px=sx+off+(ex-sx)*rnd(i),py=y(px)-40-rnd(i+3)*30*slip;circ(px+(rnd(i+5)-.5)*20,py,6+8*rnd(i+8),K.snow,.7*slip);}
+  const kx=t<10500?mix(120,200,P(t,5000,7000)):200+off,ky=y(kx)-36;person(kx,ky,K.text,.8,1,t>5000&&t<7000?t/90:0);
+  pill(70,150,'SCHICHTEN',K.ice,P(t,0,700),'c',10.5);pill(W-6,130,'SCHWACHSCHICHT',K.down,P(t,3500,4100),'r',10.5);
+  pill(sx-10,40,'BRUCH!',K.down,crack*(1-P(t,10300,10600)),'c',11);pill(330,60,'SCHNEEBRETT',K.ice,P(t,10600,11200),'c',11);
+  pill(330,92,'PIEPSER · SONDE · SCHAUFEL',K.up,P(t,14000,14600),'c',10);},
+ box:{was:'Eine Lawine ist eine große Menge Schnee, die sich plötzlich löst und einen Hang hinabrutscht oder -stürzt.',
+  erkennen:['Hänge steiler als etwa 30°','Viel Neuschnee oder Triebschnee durch Wind','„Wumm“-Geräusche und Risse in der Schneedecke = Alarm'],
+  bedeutung:'Die meisten Lawinenopfer lösen die Lawine selbst aus. Nach 15 Minuten unter dem Schnee sinken die Überlebenschancen stark.',
+  tipp:'Vor Skitouren immer den Lawinenlagebericht lesen – in Bayern gibt es ihn täglich beim Lawinenwarndienst.'}});
+
+add({id:'eisregen',area:'winter',title:'Eisregen & Glatteis',sub:'Regen, der beim Aufprall gefriert',total:18500,
+ steps:[{at:0,text:'Oben in der Wolke ist es kalt: Es bilden sich Schneeflocken.'},
+  {at:3500,text:'Auf dem Weg nach unten fallen sie durch eine WARME Luftschicht und schmelzen zu Regentropfen.'},
+  {at:7000,text:'Direkt am Boden ist es aber unter 0 °C. Die Tropfen werden unterkühlt – sie bleiben flüssig, obwohl es eiskalt ist.'},
+  {at:10500,text:'Berühren sie Boden, Äste oder Leitungen, gefrieren sie sofort zu einer Eisschicht: EISREGEN.'},
+  {at:14000,text:'Straßen werden spiegelglatt (Glatteis), Äste und Leitungen brechen unter dem Eis. Besser zu Hause bleiben!'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=244;const la=P(t,0,800);
+  rectF(0,0,W,92,K.ice,.16*la);rectF(0,92,W,82,K.orange,.14*P(t,3500,4300));rectF(0,174,W,gy-174,K.ice,.16*P(t,7000,7800));
+  txt(W-8,46,'−5 °C',K.ice,11,'right',800,la);txt(W-8,132,'+3 °C',K.orange,11,'right',800,P(t,3500,4300));txt(W-8,210,'−2 °C',K.ice,11,'right',800,P(t,7000,7800));
+  ground(gy,'#7d8794','#5d6672');rectF(0,gy,W,10,'#4a515c');
+  for(let i=0;i<40;i++){const y=(rnd(i)*300+t*.05)%(gy-10)+4,x=20+420*rnd(i+3)+3*Math.sin(t/400+i);
+   if(y<92)flake(x,y,3,K.snow,.95,t/600+i);else if(y<174)ell(x,y,2,3.5,K.blue,.9);else ell(x,y,2,3.5,K.aqua,.95);}
+  const ia=P(t,10500,12500);line(0,96,W,110,K.mute,2);line(0,96,W,110,'#bfe6ff',4,ia*.8);
+  tree(90,gy,1.6,0,1,.9);if(ia>0)for(let k=0;k<6;k++)ell(90+(k-2.5)*8,gy-56+k%2*8,7,3,'#cfeeff',ia*.8);
+  if(ia>0){rectF(220,gy,240,10,'#bfe6ff',ia*.6);for(let k=0;k<4;k++)line(240+k*50,gy+3,260+k*50,gy+3,'#ffffff',2,ia);}
+  pill(240,46,'SCHNEE',K.ice,la,'c',10.5);pill(240,132,'SCHMILZT',K.orange,P(t,3500,4100),'c',10.5);pill(240,210,'UNTERKÜHLT',K.aqua,P(t,7000,7600),'c',10.5);
+  pill(330,gy-22,'GLATTEIS!',K.down,P(t,14000,14600),'c',11);pill(360,124,'EIS AN LEITUNG',K.ice,P(t,10600,11200),'c',10);},
+ box:{was:'Eisregen ist Regen, der aus unterkühlten Tropfen besteht und beim Auftreffen sofort gefriert.',
+  erkennen:['Es regnet, obwohl es unter 0 °C ist','Alles ist von einer glasklaren Eisschicht überzogen','Typisch, wenn nach Frost milde Luft heranzieht'],
+  bedeutung:'Eisregen ist eine der gefährlichsten Wetterlagen im Winter: Glatteis führt zu vielen Unfällen und Stürzen.',
+  tipp:'Bei Glatteis-Warnung: Wege mit Sand oder Splitt streuen, Schuhe mit Profil tragen – und Autofahrten möglichst vermeiden.'}});
+
+add({id:'graupel',area:'winter',title:'Schnee, Graupel oder Hagel?',sub:'Drei Arten von gefrorenem Niederschlag',total:18500,
+ steps:[{at:0,text:'Gefrorenes Wasser kann in drei Formen vom Himmel fallen – sie entstehen ganz unterschiedlich.'},
+  {at:3500,text:'SCHNEE: Eiskristalle wachsen in der Wolke zu sechseckigen Sternen und verhaken sich zu Flocken.'},
+  {at:7000,text:'GRAUPEL: Unterkühlte Tröpfchen frieren an Schneeflocken an. Es entstehen weiße, weiche Kügelchen (2–5 mm).'},
+  {at:10500,text:'HAGEL: Harte, oft durchsichtige Eiskörner ab 5 mm aus kräftigen Gewittern – Schicht für Schicht gewachsen.'},
+  {at:14000,text:'Faustregel: Graupel fällt oft im Frühling (Aprilwetter) und lässt sich zerdrücken. Hagel ist hart und kommt meist im Sommer.'}],
+ draw(t){bg(K.sky1,K.sky2);const cy=118;
+  const a1=P(t,3500,4300),a2=P(t,7000,7800),a3=P(t,10500,11300);[[85,a1],[240,a2],[395,a3]].forEach(([x,a])=>{circ(x,cy,54,K.pillBg,a);ring(x,cy,54,K.mute,1.5,a);});
+  if(a1>0){const r=t/3000;for(let k=0;k<6;k++){const an=r+k*Math.PI/3,ex=85+Math.cos(an)*40,ey=cy+Math.sin(an)*40;line(85,cy,ex,ey,K.ice,3,a1);for(const f of[.45,.7]){const bx=85+Math.cos(an)*40*f,by=cy+Math.sin(an)*40*f;line(bx,by,bx+Math.cos(an+.7)*10,by+Math.sin(an+.7)*10,K.ice,2,a1);line(bx,by,bx+Math.cos(an-.7)*10,by+Math.sin(an-.7)*10,K.ice,2,a1);}}}
+  if(a2>0){circ(240,cy,30,'#eef4fb',a2);for(let k=0;k<22;k++){const an=k*.29;circ(240+Math.cos(an)*28,cy+Math.sin(an)*28,6,'#dde7f2',a2);}for(let k=0;k<8;k++)circ(240+(rnd(k)-.5)*36,cy+(rnd(k+4)-.5)*36,3,'#c8d6e6',a2);}
+  if(a3>0){for(let k=4;k>=1;k--){circ(395,cy,k*9,k%2?'#cfe6ff':'#9fc8f0',a3);ring(395,cy,k*9,'#7fb2e6',1,a3);}circ(395,cy,5,'#ffffff',a3);}
+  [[85,a1,0],[240,a2,1],[395,a3,2]].forEach(([x,a,k])=>{for(let i=0;i<7;i++){const y=196+((t*.06+rnd(i+k*9)*90)%90),xx=x-40+80*rnd(i+k*5);if(k===0)flake(xx,y,3,K.snow,a,t/500+i);else if(k===1)circ(xx,y,2.5,'#eef4fb',a);else circ(xx,y,3.5,'#cfe6ff',a);}});
+  pill(85,40,'SCHNEE',K.ice,a1,'c',11);pill(240,40,'GRAUPEL 2–5 mm',K.text,a2,'c',10.5);pill(395,40,'HAGEL ≥ 5 mm',K.blue,a3,'c',10.5);
+  pill(240,280,'WEICH = GRAUPEL · HART = HAGEL',K.gold,P(t,14000,14600),'c',10);},
+ qimg:false,
+ box:{was:'Schnee, Graupel und Hagel sind gefrorener Niederschlag. Sie unterscheiden sich in Aufbau, Größe und Härte.',
+  erkennen:['Schnee: lockere Flocken aus sechseckigen Kristallen','Graupel: weiße, weiche Kügelchen, zerfallen leicht','Hagel: harte Eiskörner ab 5 mm, innen mit Schichten'],
+  bedeutung:'Graupel und Hagel kündigen meist kräftige Schauer oder Gewitter an. Großer Hagel kann schwere Schäden anrichten.',
+  tipp:'Keine Schneeflocke gleicht der anderen – aber alle haben sechs Arme, weil Eis in Sechsecken kristallisiert.'}});
+
+add({id:'polarwirbel',area:'winter',title:'Kältewelle & Polarwirbel',sub:'Wenn die Arktis-Kälte nach Süden ausbricht',total:18500,
+ steps:[{at:0,text:'Über dem Nordpol kreist im Winter ein riesiger Wirbel aus kalter Luft: der POLARWIRBEL.'},
+  {at:3500,text:'Ein starkes Windband – der JETSTREAM – hält die Kälte wie ein Zaun im Norden fest.'},
+  {at:7000,text:'Wird der Wirbel gestört, beginnt das Windband zu schlingern und große Wellen zu schlagen.'},
+  {at:10500,text:'Durch die Ausbuchtungen strömt eiskalte Polarluft weit nach Süden – bis nach Mitteleuropa: eine KÄLTEWELLE.'},
+  {at:14000,text:'Dann drohen Temperaturen unter −15 °C, zugefrorene Seen und geplatzte Wasserleitungen.'}],
+ draw(t){bg(K.sky1,K.sky2);const cx=230,cy=150,R=132;circ(cx,cy,R,K.sea2);ring(cx,cy,R,K.mute,1.5,.6);
+  const wob=P(t,7000,10500),ph=3.17+t/40000,rr=th=>72+wob*34*Math.sin(4*th+ph);
+  const pts=[];for(let k=0;k<=96;k++){const th=k/96*Math.PI*2;pts.push([cx+Math.cos(th)*rr(th),cy+Math.sin(th)*rr(th)]);}
+  poly(pts,hexA(K.ice,.35),null,1,P(t,0,1000));
+  const ja=P(t,3500,4300);path(pts,K.ice,5,ja*.9);for(let k=0;k<6;k++){const th=-t/3000+k*Math.PI/3,x=cx+Math.cos(th)*rr(th),y=cy+Math.sin(th)*rr(th);head(x,y,th-Math.PI/2,K.ice,10,ja);}
+  circ(cx,cy,4,K.text);pill(cx,cy+18,'NORDPOL',K.text,P(t,0,700),'c',10);
+  const ex=cx+Math.cos(-.4)*112,ey=cy+Math.sin(-.4)*112;circ(ex,ey,5,K.gold);pill(ex+12,ey,'EUROPA',K.gold,1,'l',10);
+  pill(8,24,'POLARWIRBEL',K.ice,P(t,0,700),'l',11);pill(8,54,'JETSTREAM',K.ice,ja,'l',10.5);
+  pill(W-6,250,'KÄLTEWELLE!',K.blue,P(t,10500,11100),'r',11);pill(W-6,280,'UNTER −15 °C',K.ice,P(t,14000,14600),'r',10.5);},
+ qimg:false,
+ box:{was:'Der Polarwirbel ist ein großes Kältegebiet über der Arktis, das im Winter von starken Westwinden umkreist wird.',
+  erkennen:['Stabiler Wirbel: milder, oft nasser Winter in Deutschland','Gestörter Wirbel: Kaltluft bricht nach Süden aus','Wetterdienste sehen das oft 1–2 Wochen im Voraus'],
+  bedeutung:'Ein geschwächter Polarwirbel kann in Europa und Nordamerika wochenlange, extreme Kältewellen auslösen.',
+  tipp:'Bei strengem Frost: Wasserleitungen in unbeheizten Räumen schützen, Haustiere reinholen und an Nachbarn ohne Heizung denken.'}});
+
+/* ---------- WASSER ---------- */
+function valley(x){return x<120?mix(150,214,x/120):x<200?214:x<220?mix(214,252,(x-200)/20):x<260?252:x<280?mix(252,214,(x-260)/20):x<320?214:x<340?mix(214,190,(x-320)/20):x<350?190:x<370?mix(190,222,(x-350)/20):222;}
+add({id:'hochwasser',area:'wasser',title:'Hochwasser am Fluss',sub:'Wenn der Fluss über die Ufer tritt',total:18500,
+ steps:[{at:0,text:'Ein Fluss fließt normalerweise ruhig in seinem Flussbett.'},
+  {at:3500,text:'Regnet es tagelang im ganzen Einzugsgebiet oder schmilzt viel Schnee, fließt immer mehr Wasser in den Fluss.'},
+  {at:7000,text:'Der Pegel steigt. Zuerst werden die AUEN – die flachen Wiesen am Ufer – überflutet.'},
+  {at:10500,text:'Steigt das Wasser über den Deich, laufen Straßen, Keller und ganze Orte voll: HOCHWASSER.'},
+  {at:14000,text:'Auen und Überflutungsflächen sind wichtig: Sie nehmen Wasser auf und schützen so die Orte flussabwärts.'}],
+ draw(t){bg(K.sky1,K.sky2);const ra=P(t,3500,4300);if(ra>0){cloud(240,30,520,56,K.cloud2,ra,K.storm2);rain(0,W,50,H,t,K.blue,.55*ra,40,2);}
+  const land=[[0,H]];for(let x=0;x<=W;x+=4)land.push([x,valley(x)]);land.push([W,H]);poly(land,K.ground);rectF(350,186,20,6,K.ground2);
+  house(410,222,1);house(450,222,.9);tree(60,valley(60),1);tree(150,214,.9);
+  const lvl=t<7000?mix(240,226,P(t,3500,7000)):t<10500?mix(226,206,P(t,7000,10500)):mix(206,184,P(t,10500,13500));
+  overLand(valley,()=>seaSurf(x=>lvl+1.5*Math.sin(x/12+t/250),0,W,H,K.blue,K.sea2,.85));
+  line(245,170,245,256,K.text,2);for(let k=0;k<6;k++){line(245,250-k*14,252,250-k*14,K.text,1.5);}txt(258,170,'PEGEL',K.text,9,'left',800);
+  pill(240,282,'FLUSSBETT',K.text,P(t,0,700)*(1-P(t,6800,7100)),'c',10.5);pill(110,190,'AUEN',K.indigo,P(t,7200,7800),'c',11);
+  pill(360,160,'DEICH',K.text,P(t,7200,7800)*(1-P(t,10300,10600)),'c',10.5);pill(420,160,'HOCHWASSER!',K.down,P(t,10800,11400),'c',11);
+  pill(110,150,'AUEN SPEICHERN WASSER',K.up,P(t,14000,14600),'c',10);},
+ box:{was:'Hochwasser bedeutet: Ein Fluss führt viel mehr Wasser als normal und tritt über seine Ufer.',
+  erkennen:['Lang anhaltender Regen oder Schneeschmelze','Der Pegel steigt über Stunden bis Tage','Behörden melden Hochwasser-Warnstufen'],
+  bedeutung:'Hochwasser lässt sich meist einige Tage vorhersagen – Zeit, um Keller zu räumen und Sandsäcke zu legen.',
+  tipp:'Pegelstände für Bayern gibt es aktuell beim Hochwassernachrichtendienst (hnd.bayern.de) – auch für die Isar bei Landshut.'}});
+
+add({id:'sturzflut',area:'wasser',title:'Sturzflut',sub:'Wenn aus einem Bach eine Flutwelle wird',total:18500,
+ steps:[{at:0,text:'Ein kleiner Bach in einem engen Tal – eigentlich harmlos.'},
+  {at:3500,text:'Ein Gewitter bleibt lange über dem Tal hängen: In einer Stunde fällt so viel Regen wie sonst in einem Monat.'},
+  {at:7000,text:'Der Boden kann das Wasser nicht schnell genug aufnehmen. Es schießt über die Hänge in den Bach.'},
+  {at:10500,text:'Innerhalb von Minuten wird aus dem Bach eine reißende Flutwelle mit Schlamm, Ästen und Autos: eine STURZFLUT.'},
+  {at:14000,text:'Sturzfluten kommen fast ohne Vorwarnung. Bei Starkregen-Warnung nie in Unterführungen, Tiefgaragen oder Keller gehen!'}],
+ draw(t){bg(K.storm2,K.sky2);const vy=x=>x<200?mix(80,250,Math.pow(x/200,.8)):x<280?250:mix(250,80,Math.pow((x-280)/200,.8));
+  const ga=P(t,3500,4300);cbCloud(240,70,0,300,0,ga);rain(60,420,74,H,t*1.6,K.blue,.7*ga,70,5);
+  const land=[[0,H]];for(let x=0;x<=W;x+=4)land.push([x,vy(x)]);land.push([W,H]);poly(land,K.ground);
+  house(170,vy(170),.9);house(320,vy(320),.9);tree(100,vy(100),1);tree(380,vy(380),1);
+  const ra=P(t,7000,8000);if(ra>0)for(let k=0;k<8;k++){const ph=(t/700+k/8)%1;const side=k%2?1:-1,x=side<0?mix(60,200,ph):mix(420,280,ph);circ(x,vy(x)-3,3,K.blue,ra*.9);}
+  const lvl=mix(246,mix(246,196,P(t,7000,10500)),1)-P(t,10500,12500)*34,mud=P(t,8500,11000);
+  overLand(vy,()=>seaSurf(x=>lvl+2*Math.sin(x/9+t/120),0,W,H,mixCol(K.blue,'#7a5a3a',mud),K.sea2,.88));
+  if(mud>.3)for(let i=0;i<6;i++){const x=(t*.12+i*80)%W;line(x,lvl+4,x+16,lvl+8,K.trunk,3,mud);}
+  pill(240,280,'KLEINER BACH',K.text,P(t,0,700)*(1-P(t,6800,7100)),'c',10.5);pill(240,40,'STARKREGEN',K.blue,ga*(1-P(t,10300,10600)),'c',11);
+  pill(240,40,'STURZFLUT!',K.down,P(t,10600,11200),'c',11);pill(240,120,'NICHT IN KELLER & UNTERFÜHRUNGEN',K.gold,P(t,14000,14600),'c',10);},
+ box:{was:'Eine Sturzflut ist eine plötzliche, sehr schnelle Überschwemmung nach extremem Starkregen – oft in kleinen Tälern.',
+  erkennen:['Sehr heftiger Regen über längere Zeit am selben Ort','Bäche werden in Minuten braun und reißend','Grollen und mitgerissene Äste'],
+  bedeutung:'Sturzfluten sind schwer vorherzusagen und extrem gefährlich – so wie 2021 im Ahrtal oder 2016 in Simbach am Inn.',
+  tipp:'Schon 30 cm fließendes Wasser können einen Menschen umwerfen. Niemals durch überflutete Straßen gehen oder fahren!'}});
+
+add({id:'starkregen',area:'wasser',title:'Starkregen in der Stadt',sub:'Wenn die Kanalisation überläuft',total:18500,
+ steps:[{at:0,text:'In der Stadt ist fast alles zugepflastert: Regenwasser kann kaum versickern.'},
+  {at:3500,text:'Es fließt in die Gullys und durch die Kanalisation ab – solange es nicht zu viel wird.'},
+  {at:7000,text:'Bei Starkregen sind die Rohre schnell voll. Das Wasser drückt aus den Gullys wieder nach oben.'},
+  {at:10500,text:'Straßen werden zu Bächen, Unterführungen und Keller laufen voll – oft in wenigen Minuten.'},
+  {at:14000,text:'Schutz: Rückstauklappe im Keller, Dachrinnen freihalten und bei Warnung keine Unterführungen benutzen.'}],
+ draw(t){bg(K.storm2,K.sky2);const sy=x=>x>360&&x<450?170+28*Math.sin(Math.PI*(x-360)/90):170;
+  const ra=P(t,0,1000)*(.4+.6*P(t,6000,7500));cloud(240,24,520,56,K.cloud2,1,K.storm2);rain(0,W,40,170,t*1.5,K.blue,.6*ra,60,9);
+  earthBg(170);
+  path(Array.from({length:97},(_,i)=>[i*5,sy(i*5)]),'#4a515c',8);
+  rectF(30,110,70,60,K.house);rectF(140,100,80,70,K.house);rectF(250,116,70,54,K.house);[[40,124],[70,124],[152,114],[188,114],[262,128],[292,128]].forEach(([x,y])=>rectF(x,y,14,14,K.sea2));
+  rectF(0,232,W,24,K.mute,.6);rectF(0,236,W,16,K.storm1);
+  const fill=P(t,3500,9000);rectF(0,252-16*fill,W,16*fill,K.blue,.9);
+  [[150,174],[330,174]].forEach(([x])=>{rectF(x-5,174,10,60,K.storm1);rectF(x-5,234-56*fill*P(t,3500,9000),10,56*fill,K.blue,.9);rectF(x-10,171,20,4,'#30343b');});
+  const ua=P(t,7000,7800);if(ua>0)[[150],[330]].forEach(([x])=>{for(let i=0;i<10;i++){const ph=(t/500+i/10)%1;circ(x+(rnd(i)-.5)*16*ph,170-ph*30+ph*ph*30,2.5,K.blue,ua*(1-ph));}});
+  const st=P(t,10500,13500);if(st>0){seaSurf(x=>Math.min(sy(x),170-8*st)+(x>360&&x<450?0:0)+1.2*Math.sin(x/8+t/150),0,W,250,K.blue,K.blue,.0);seaSurf(x=>Math.max(170-6*st,0)+1.2*Math.sin(x/8+t/150),0,W,170+0,K.blue,K.blue,.0);}
+  if(st>0){poly([[0,170-6*st],[W,170-6*st],[W,170],[0,170]],K.blue,null,1,.8);const uw=[[360,170]];for(let x=360;x<=450;x+=5)uw.push([x,sy(x)]);uw.push([450,170]);poly(uw,K.blue,null,1,.85*st);}
+  pill(240,286,'KANAL',K.text,P(t,3500,4100),'c',10.5);pill(150,62,'GULLY',K.text,P(t,3500,4100)*(1-P(t,6800,7100)),'c',10.5);pill(240,62,'ROHRE VOLL!',K.down,ua*(1-P(t,10300,10600)),'c',11);
+  pill(405,140,'UNTERFÜHRUNG',K.down,P(t,10800,11400),'c',10);pill(240,62,'RÜCKSTAUKLAPPE!',K.up,P(t,14000,14600),'c',10.5);},
+ box:{was:'Starkregen ist sehr viel Regen in kurzer Zeit. In Städten kann die Kanalisation die Wassermassen dann nicht mehr fassen.',
+  erkennen:['Mehr als ca. 25 Liter pro Quadratmeter in einer Stunde','Gullys sprudeln, Wasser steht auf der Straße','Oft bei Sommergewittern'],
+  bedeutung:'Starkregen kann überall auftreten – auch weit weg von Flüssen. Viele Keller laufen durch Rückstau aus dem Kanal voll.',
+  tipp:'Eine Rückstauklappe in der Kellerleitung verhindert, dass Abwasser aus dem Kanal ins Haus drückt.'}});
+
+add({id:'deichbruch',area:'wasser',title:'Wenn ein Deich bricht',sub:'Sickerwasser, Sandsäcke und Deichbruch',total:18500,
+ steps:[{at:0,text:'Ein Deich schützt das Land hinter ihm vor dem Hochwasser.'},
+  {at:3500,text:'Steht das Wasser lange hoch, sickert es langsam durch den Deich – er wird nass und weich.'},
+  {at:7000,text:'Auf der Landseite tritt Wasser aus und spült Sand mit heraus. Der Deich wird von innen ausgehöhlt.'},
+  {at:10500,text:'Plötzlich bricht der Deich: Das Wasser strömt durch die Lücke und überflutet das Land dahinter.'},
+  {at:14000,text:'Deshalb kontrollieren Helfer bei Hochwasser die Deiche Tag und Nacht und sichern Schwachstellen mit Sandsäcken.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=240,br=P(t,10500,12000);earthBg(gy);rectF(0,gy-3,W,4,K.ground);
+  seaSurf(x=>130+2*Math.sin(x/12+t/300),0,230,gy,K.blue,K.sea2,.92);
+  const top=mix(118,190,br);poly([[150,gy],[210,118],[270,118],[330,gy]],K.ground2);
+  const wa=P(t,3500,7000);if(wa>0){const g=X.createLinearGradient(170,0,330,0);g.addColorStop(0,hexA(K.blue,.6*wa));g.addColorStop(1,hexA(K.blue,.15*wa));poly([[170,132],[200,140],[300,214],[330,gy],[150,gy]],g);path([[200,132],[250,170],[300,214],[322,236]],K.blue,2,wa,[5,4]);}
+  const sa=P(t,7000,7600)*(1-br);if(sa>0){for(let i=0;i<10;i++){const ph=(t/400+i/10)%1;circ(330+ph*16*(rnd(i)-.3),gy-2-ph*14+ph*ph*14,2,'#c9a46a',sa*(1-ph));}ell(334,gy-1,10,3,K.blue,sa*.8);}
+  if(br>0){poly([[240-14*br,118],[240+14*br,118],[240+26*br,gy],[240-26*br,gy]],K.blue,null,1,.95);overLand(()=>gy,()=>seaSurf(x=>gy-26*P(t,11000,14000)+1.5*Math.sin(x/10+t/200),240,W,H,K.blue,K.sea2,.85));}
+  house(400,gy,1);house(450,gy,.9);
+  const ba=P(t,14000,14800);if(ba>0)for(let r=0;r<3;r++)for(let c=0;c<4-r;c++)rrect(314+c*13+r*6,gy-9-r*8,12,8,3,'#c9a46a','#8a6d3e',1,ba);
+  pill(240,96,'DEICH',K.text,P(t,0,700)*(1-P(t,3300,3600)),'c',11);pill(80,160,'HOCHWASSER',K.blue,P(t,0,700),'c',10.5);
+  pill(270,200,'SICKERWASSER',K.blue,wa*(1-P(t,10300,10600)),'l',10);pill(W-6,180,'SAND WIRD AUSGESPÜLT',K.down,sa,'r',10);
+  pill(240,96,'DEICHBRUCH!',K.down,P(t,10600,11200)*(1-P(t,13800,14100)),'c',11);pill(240,96,'SANDSÄCKE SICHERN',K.up,ba,'c',10.5);},
+ box:{was:'Ein Deich ist ein aufgeschütteter Damm aus Erde, Sand und Lehm, der das Hinterland vor Hochwasser schützt.',
+  erkennen:['Nasse, weiche Stellen auf der Landseite','Kleine Quellen am Deichfuß, die Sand mitspülen','Risse oder Rutschungen am Deich'],
+  bedeutung:'Ein Deichbruch geschieht oft schnell. Dann muss das Gebiet dahinter sofort geräumt werden.',
+  tipp:'Siehst du bei Hochwasser Wasser durch einen Deich sickern: sofort der Feuerwehr (112) melden!'}});
+
+const ix=l=>(l-58)/44*W,iy=l=>(37-l)/33*H;
+const INDIA=[[68,23],[72,21],[73,16],[76,9],[77.5,8],[80,10],[80,15],[85,20],[89,22],[92,22],[95,27],[97,28],[95,30],[88,28],[80,30],[75,32],[74,35],[70,30],[67,25]];
+add({id:'monsun',area:'wasser',title:'Der Monsun',sub:'Wind, der zweimal im Jahr die Richtung wechselt',total:18500,
+ steps:[{at:0,text:'In Südasien wechselt der Wind zweimal im Jahr komplett die Richtung: der MONSUN.'},
+  {at:3500,text:'Im Sommer heizt sich das Land viel stärker auf als das Meer. Über dem Land entsteht ein HITZETIEF.'},
+  {at:7000,text:'Feuchte Meeresluft strömt vom Indischen Ozean aufs Land – und bringt riesige Regenmengen.'},
+  {at:10500,text:'An den Bergen regnet sich die Luft ab. Der Ort Cherrapunji in Indien gehört zu den regenreichsten Orten der Erde.'},
+  {at:14000,text:'Im Winter dreht sich alles um: Trockener Wind weht vom Land aufs Meer. Der Monsun bringt Ernten – aber auch Überschwemmungen.'}],
+ draw(t){bg(K.sea2,K.sea);const win=t>=14000;
+  rectF(0,0,W,iy(30),K.ground2,.9);poly(INDIA.map(([a,b])=>[ix(a),iy(b)]),win?'#9a8a5a':K.ground);rectF(ix(74),iy(34),ix(97)-ix(74),iy(28)-iy(34),'#8a7356',.8);for(let i=0;i<10;i++)poly([[ix(74+i*2.3),iy(31)],[ix(75.1+i*2.3),iy(34.5)],[ix(76.2+i*2.3),iy(31)]],'#e9f1fa',null,1,.8);
+  const ha=P(t,3500,4300)*(1-P(t,13800,14200));if(ha>0){const pu=.8+.2*Math.sin(t/300);circ(ix(79),iy(23),24*pu,K.down,ha*.25);txt(ix(79),iy(23),'T',K.down,18,'center',800,ha);}
+  const wa=P(t,7000,7800)*(1-P(t,13800,14200));for(let k=0;k<3;k++){arrowPath([[ix(62+k*4),iy(8)],[ix(68+k*4),iy(14)],[ix(74+k*5),iy(21)]],K.aqua,4,wa);}
+  const ra=P(t,9000,10000)*(1-P(t,13800,14200));if(ra>0){cloud(ix(74),iy(18),70,24,K.cloud2,ra,K.storm2);cloud(ix(91),iy(26),80,26,K.cloud2,ra,K.storm2);rain(ix(70),ix(78),iy(18)+10,iy(12),t,K.blue,.6*ra,14,3);rain(ix(87),ix(95),iy(26)+10,iy(21),t,K.blue,.6*ra,14,6);}
+  const wi=P(t,14000,14800);for(let k=0;k<3;k++)arrowPath([[ix(84-k*4),iy(25)],[ix(78-k*4),iy(17)],[ix(70-k*4),iy(10)]],K.orange,4,wi);
+  pill(ix(80),iy(33),'HIMALAYA',K.text,.9,'c',10);pill(ix(64),iy(5),'INDISCHER OZEAN',K.text,P(t,0,700),'c',10);
+  pill(ix(88),iy(23),'HITZETIEF',K.down,ha,'c',10.5);pill(ix(64),iy(16),'FEUCHTER WIND',K.aqua,wa,'c',10);pill(ix(93),iy(19),'CHERRAPUNJI',K.blue,P(t,10500,11100)*(1-P(t,13800,14200)),'c',10);
+  pill(ix(64),iy(16),'WINTER: TROCKEN',K.orange,wi,'c',10);},
+ qimg:false,
+ box:{was:'Der Monsun ist ein großräumiger Wind, der jahreszeitlich seine Richtung wechselt – am bekanntesten in Indien und Südostasien.',
+  erkennen:['Sommermonsun: Wind vom Meer, viel Regen (Juni bis September)','Wintermonsun: Wind vom Land, trocken','Grund: Land und Meer erwärmen sich unterschiedlich schnell'],
+  bedeutung:'Mehr als eine Milliarde Menschen sind auf den Monsunregen für ihre Ernten angewiesen. Zu viel Regen bringt aber Fluten und Erdrutsche.',
+  tipp:'Das gleiche Prinzip kennst du im Kleinen vom Meer: tagsüber weht der Wind vom Meer zum Strand (Seewind), nachts umgekehrt.'}});
+
+/* ---------- HITZE ---------- */
+add({id:'hitzewelle',area:'hitze',title:'Hitzewelle',sub:'Die Hitzeglocke über Europa',total:18500,
+ steps:[{at:0,text:'Im Sommer setzt sich manchmal ein kräftiges HOCHDRUCKGEBIET fest – oft über Tage oder Wochen.'},
+  {at:3500,text:'Im Hoch sinkt die Luft ab und erwärmt sich dabei. Wolken lösen sich auf – die Sonne brennt ungehindert.'},
+  {at:7000,text:'Tag für Tag wird es heißer: Die Hitze staut sich wie unter einer Glocke – eine HITZEGLOCKE.'},
+  {at:10500,text:'Städte heizen sich besonders auf: Asphalt und Beton speichern Wärme, nachts kühlt es kaum ab (Hitzeinsel).'},
+  {at:14000,text:'Hitze ist gefährlich, vor allem für Ältere und Kinder: viel trinken, mittags im Schatten bleiben, Räume tagsüber abdunkeln.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=246,day=Math.min(7,1+Math.floor(Lp(t,7000,13000)*6.99)),heat=P(t,0,13000);
+  rectF(0,0,W,H,K.orange,.12*heat);glow(()=>circ(60,50,22,K.sun),K.sun,26);
+  ground(gy,mixCol(K.ground,'#a08a4a',heat*.8),mixCol(K.ground2,'#7d6a36',heat*.8));
+  const da=P(t,0,1200);X.save();X.globalAlpha=da;X.strokeStyle=K.rose;X.lineWidth=3;X.setLineDash([8,6]);X.beginPath();X.ellipse(240,gy,220,170,0,Math.PI,2*Math.PI);X.stroke();X.restore();
+  txt(240,gy-150,'H',K.rose,22,'center',800,da);
+  const sa=P(t,3500,4300);for(let k=0;k<5;k++){const ph=(t/1600+k/5)%1;arrow(120+k*60,100+ph*80,120+k*60,124+ph*80,K.rose,2.5,1,sa*(1-ph)*.8);}
+  const ca=1-P(t,3500,6000);cloud(330,70,90,24,K.cloud,ca);cloud(170,60,70,20,K.cloud,ca);
+  for(let i=0;i<5;i++){const x=300+i*32,h=40+30*rnd(i+2);rectF(x,gy-h,26,h,K.house);rectF(x+6,gy-h+8,6,6,K.sea2);}
+  const ua=P(t,10500,11300);for(let i=0;i<6;i++){const x=300+i*28,ph=(t/900+i*.3)%1,pts=[];for(let k=0;k<7;k++)pts.push([x+3*Math.sin(k+t/150),gy-90-ph*40-k*4]);path(pts,K.rose,1.6,ua*(1-ph));}
+  thermo(26,80,120,clamp(.3+.6*Lp(t,7000,13000)),K.down,fmt(28+(day-1)*1.7,0)+' °C');
+  pill(140,24,'HOCHDRUCK',K.rose,da,'c',10.5);pill(W-6,24,'TAG '+day,K.gold,P(t,7000,7600),'r',11);pill(370,150,'HITZEINSEL STADT',K.down,ua,'c',10);
+  pill(240,280,'TRINKEN · SCHATTEN · ABDUNKELN',K.up,P(t,14000,14600),'c',10);},
+ box:{was:'Eine Hitzewelle ist eine Phase von mehreren Tagen mit ungewöhnlich hohen Temperaturen – in Deutschland meist über 30 °C.',
+  erkennen:['Stabiles Hochdruckgebiet, kaum Wolken','Tropennächte: nachts nicht unter 20 °C','Der DWD gibt Hitzewarnungen in zwei Stufen heraus'],
+  bedeutung:'Hitze belastet Herz und Kreislauf. In heißen Sommern sterben in Deutschland Tausende Menschen an den Folgen der Hitze.',
+  tipp:'Morgens und nachts lüften, tagsüber Fenster zu und Rollläden runter – so bleibt die Wohnung länger kühl.'}});
+
+add({id:'duerre',area:'hitze',title:'Dürre',sub:'Wenn der Regen monatelang ausbleibt',total:18500,
+ steps:[{at:0,text:'Normalerweise speichert der Boden Regenwasser – Pflanzen holen es sich mit ihren Wurzeln.'},
+  {at:3500,text:'Bleibt der Regen wochen- oder monatelang aus, trocknet der Boden von oben her aus.'},
+  {at:7000,text:'Der Grundwasserspiegel sinkt, Bäche und Flüsse führen kaum noch Wasser.'},
+  {at:10500,text:'Pflanzen welken, die Ernte fällt aus, die Erde reißt auf: eine DÜRRE.'},
+  {at:14000,text:'Ausgetrockneter Boden nimmt Starkregen schlecht auf – nach einer Dürre droht deshalb oft Hochwasser.'}],
+ draw(t){const dry=P(t,3500,13000);bg(K.sky1,K.sky2);glow(()=>circ(400,46,18+10*dry,K.sun),K.sun,20+20*dry);const gy=140;
+  earthBg(gy);const wet=1-P(t,3500,10000);const g=X.createLinearGradient(0,gy,0,H);g.addColorStop(0,hexA(K.blue,.35*wet));g.addColorStop(1,hexA(K.blue,.45));X.fillStyle=g;X.fillRect(0,gy,W,H-gy);
+  const gw=mix(228,276,P(t,7000,11000));rectF(0,gw,W,H-gw,K.blue,.45);line(0,gw,W,gw,K.blue,2,.9,[6,4]);
+  rectF(0,gy-2,W,5,mixCol(K.ground,'#a08a4a',dry));
+  for(let i=0;i<9;i++){const x=110+i*38,h=34*(1-.5*P(t,9000,13000)),c=mixCol(K.leaf,'#b08a3a',P(t,9000,13000));line(x,gy,x+4*P(t,10000,13000),gy-h,c,3);ell(x-6,gy-h*.6,7,3,c,1,-.5);ell(x+7,gy-h*.75,7,3,c,1,.5);line(x,gy,x,gy+30+20*(1-dry),K.trunk,1.5,.7);}
+  const rv=mix(18,4,P(t,7000,11000));poly([[0,gy],[80,gy],[70,gy+22],[10,gy+22]],K.earth2);rectF(4,gy+22-rv,72,rv,K.blue,.9);
+  const ca=P(t,10500,12000);if(ca>0)for(let i=0;i<14;i++){const x=W*rnd(i+3);path([[x,gy],[x+6,gy+8],[x+2,gy+16]],'#2b1f16',2,ca);}
+  pill(240,gy+40,'BODENFEUCHTE',K.blue,P(t,0,700)*(1-P(t,6800,7100)),'c',10.5);pill(W-6,gw-14,'GRUNDWASSER ↓',K.blue,P(t,7000,7600),'r',10.5);
+  pill(40,gy-20,'BACH',K.blue,1,'c',10);pill(240,40,'DÜRRE',K.rose,P(t,10600,11200),'c',11);pill(240,70,'DANACH: HOCHWASSERGEFAHR',K.gold,P(t,14000,14600),'c',10);},
+ box:{was:'Eine Dürre ist ein langer Zeitraum mit viel zu wenig Niederschlag, sodass Boden, Pflanzen und Gewässer austrocknen.',
+  erkennen:['Rissiger Boden und welke, braune Pflanzen','Niedrige Pegel in Flüssen und Seen','Sinkender Grundwasserspiegel'],
+  bedeutung:'Dürren führen zu Ernteausfällen, Waldbränden, Wassermangel und Problemen für die Schifffahrt auf Flüssen.',
+  tipp:'Der „Dürremonitor“ des Helmholtz-Zentrums zeigt täglich, wie trocken die Böden in Deutschland gerade sind.'}});
+
+add({id:'waldbrand',area:'hitze',title:'Waldbrand',sub:'Feuerdreieck, Funkenflug und Schneisen',total:19000,
+ steps:[{at:0,text:'Ein Feuer braucht drei Dinge: Brennstoff, Sauerstoff und Hitze – das FEUERDREIECK.'},
+  {at:3500,text:'Nach langer Trockenheit ist der Wald wie Zunder. Ein Funke reicht – meistens ist der Mensch der Auslöser.'},
+  {at:7000,text:'Der Wind treibt das Feuer voran und trägt glühende Funken weit voraus. Dort entstehen neue Brände (Funkenflug).'},
+  {at:10500,text:'Die Feuerwehr legt SCHNEISEN an – Streifen ohne Brennstoff – und löscht aus der Luft mit Flugzeugen und Hubschraubern.'},
+  {at:14000,text:'Im Wald nie rauchen oder grillen, keine Glasflaschen liegen lassen – und die Waldbrand-Warnstufen beachten.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=240;
+  if(t<3500){const a=1-P(t,2800,3400);poly([[240,40],[120,230],[360,230]],null,K.rose,3,a);flames(240,190,70,70,t,a);pill(240,34,'HITZE',K.rose,a,'c',11);pill(110,248,'BRENNSTOFF',K.orange,a,'c',10.5);pill(370,248,'SAUERSTOFF',K.aqua,a,'c',10.5);return;}
+  ground(gy,'#6a5a3a','#4a3e28');const front=mix(70,362,P(t,4500,13000)),gap=[372,404];
+  rectF(0,0,W,H,'#ff6a2a',.08*P(t,4500,8000));
+  for(let i=0;i<18;i++){const x=16+i*26;if(x>gap[0]&&x<gap[1]&&t>10500)continue;const burnt=x<front-30,burning=Math.abs(x-front)<30;
+   if(burnt){line(x,gy,x,gy-34,'#1b1410',4);line(x,gy-24,x-8,gy-30,'#1b1410',2);}else tree(x,gy,1.1,0,1,1);
+   if(burning)flames(x,gy-8,26,56,t+i*100,1,i);}
+  for(let k=0;k<4;k++)circ(front-40+k*20,gy-80-k*20-(t/30)%30,18+k*6,'#5a5f68',.5);
+  const fa=P(t,7000,7600);if(fa>0)for(let i=0;i<14;i++){const ph=(t/1200+rnd(i))%1;circ(front+ph*90,gy-60-Math.sin(ph*Math.PI)*60,2,'#ffb02e',fa*(1-ph));}
+  const sa=P(t,10500,11300);if(sa>0){rectF(gap[0],gy,gap[1]-gap[0],6,'#8a7356',sa);const hx=mix(500,front+10,P(t,10800,12500)),hy=60;rrect(hx-18,hy-8,36,14,6,K.down,null,1,sa);line(hx-26,hy-12,hx+26,hy-12,K.text,2,sa);
+   if(t>12500)for(let i=0;i<20;i++){const ph=(t/300+rnd(i))%1;circ(hx+(rnd(i+2)-.5)*24,hy+10+ph*120,2,K.blue,sa*(1-ph*.5));}}
+  pill(160,40,'FUNKE',K.orange,P(t,3500,4100)*(1-P(t,6800,7100)),'c',10.5);pill(W-6,100,'FUNKENFLUG',K.orange,fa*(1-P(t,10300,10600)),'r',10.5);
+  pill(388,gy+24,'SCHNEISE',K.up,sa,'c',10);pill(240,22,'WIND →',K.text,P(t,7000,7600),'c',10.5);pill(240,280,'NICHT RAUCHEN · NICHT GRILLEN',K.rose,P(t,14000,14600),'c',10);},
+ box:{was:'Ein Waldbrand ist ein unkontrolliertes Feuer in Wald oder Vegetation. Hitze, Trockenheit und Wind lassen ihn schnell wachsen.',
+  erkennen:['Rauchsäule über dem Wald','Brandgeruch, Ascheregen','Warnstufen 1–5 (Waldbrand-Gefahrenindex des DWD)'],
+  bedeutung:'Über 90 % der Waldbrände in Deutschland werden vom Menschen verursacht – durch Unachtsamkeit oder Brandstiftung.',
+  tipp:'Siehst du Rauch im Wald: Sofort 112 anrufen, den Ort möglichst genau beschreiben und dich gegen den Wind in Sicherheit bringen.'}});
+
+add({id:'sandsturm',area:'hitze',title:'Sandsturm',sub:'Eine Wand aus Staub rollt heran',total:18500,
+ steps:[{at:0,text:'In der Wüste liegt lockerer, trockener Sand – nichts hält ihn fest.'},
+  {at:3500,text:'Starker Wind – oft die Fallböen eines Gewitters – wirbelt Sand und Staub auf.'},
+  {at:7000,text:'Eine riesige Staubwand rollt heran, bis zu 1 km hoch: ein SANDSTURM (auch Haboob genannt).'},
+  {at:10500,text:'Die Sicht sinkt auf wenige Meter, der Himmel färbt sich orange. Feiner Sand dringt in jede Ritze.'},
+  {at:14000,text:'Feiner Saharastaub fliegt sogar bis nach Deutschland: Dann ist der Himmel gelblich und die Autos sind staubig.'}],
+ draw(t){bg(K.sky1,K.sky2);const gy=236;const dune=x=>gy-12*Math.sin(x/60)-8*Math.sin(x/23+1);
+  const sand=[[0,H]];for(let x=0;x<=W;x+=6)sand.push([x,dune(x)]);sand.push([W,H]);poly(sand,'#d6b06a');
+  line(100,gy-6,100,gy-50,K.trunk,4);for(let k=0;k<5;k++){const a=-Math.PI/2+(k-2)*.6;line(100,gy-50,100+Math.cos(a)*26,gy-50+Math.sin(a)*14+8,K.leaf,4);}
+  rectF(180,gy-30,40,30,'#e8d5a8');rectF(226,gy-22,30,22,'#e8d5a8');
+  const wa=P(t,3500,4300);for(let i=0;i<30;i++){const x=(W*rnd(i)+t*.15)%W,y=gy-4-rnd(i+2)*20*wa;circ(x,y,1.4,'#c9a46a',wa*.8);}
+  const fx=mix(W+80,-120,P(t,7000,12500));if(t>6800){X.globalAlpha=.95;X.fillStyle='#b97a42';X.fillRect(fx,0,W-fx+40,gy+20);X.globalAlpha=1;for(let k=0;k<34;k++){const y=gy+10-k*8,x=fx+Math.sin(k*.9+t/400)*14+k*.9;circ(x,y,20+rnd(k)*14,mixCol('#c98a4a','#a8683a',rnd(k+3)),.95);}}
+  rectF(0,0,W,H,'#d9822f',.35*P(t,10500,12500)*(1-.6*P(t,14000,15500)));
+  if(t>14000){rectF(0,0,W,H,'#f2d37a',.25*P(t,14000,15000));}
+  pill(330,gy+30,'LOCKERER SAND',K.gold,P(t,0,700)*(1-P(t,6800,7100)),'c',10.5);pill(240,60,'WIND →',K.text,wa*(1-P(t,6800,7100)),'c',10.5);
+  pill(240,60,'STAUBWAND!',K.rose,P(t,7300,7900)*(1-P(t,10300,10600)),'c',11);pill(240,60,'SICHT: WENIGE METER',K.rose,P(t,10600,11200)*(1-P(t,13800,14100)),'c',10.5);
+  pill(240,60,'SAHARASTAUB BIS DEUTSCHLAND',K.gold,P(t,14000,14600),'c',10);},
+ box:{was:'Ein Sandsturm ist ein starker Wind, der große Mengen Sand und Staub aufwirbelt und über weite Strecken trägt.',
+  erkennen:['Gelb-braune bis orangefarbene Wand am Horizont','Plötzlicher starker Wind','Sicht sinkt in Minuten fast auf null'],
+  bedeutung:'Sandstürme legen Verkehr und Flughäfen lahm und schaden der Gesundheit. Der Staub düngt aber auch Meere und den Amazonas-Regenwald.',
+  tipp:'Wenn im Frühjahr Saharastaub in Deutschland ist, sind Sonnenauf- und -untergänge besonders rot – und Solaranlagen liefern weniger Strom.'}});
+
+add({id:'feuerwirbel',area:'hitze',title:'Feuerwirbel',sub:'Ein Tornado aus Flammen',total:18500,
+ steps:[{at:0,text:'Ein großes Feuer erhitzt die Luft darüber enorm – sie schießt nach oben.'},
+  {at:3500,text:'Von allen Seiten strömt Luft nach. Kommt Wind dazu, beginnt sie sich zu drehen.'},
+  {at:7000,text:'Ein Wirbel aus Flammen entsteht: ein FEUERWIRBEL – oft nur wenige Meter breit.'},
+  {at:10500,text:'Große Feuerwirbel können über 1.000 °C heiß und Hunderte Meter hoch werden.'},
+  {at:14000,text:'Feuerwirbel tragen Glut weit weg und machen Waldbrände noch gefährlicher und unberechenbarer.'}],
+ draw(t){bg(K.storm1,K.storm2);const gy=244;ground(gy,'#3a2e22','#241c14');rectF(0,0,W,H,'#ff6a2a',.1);
+  for(let i=0;i<9;i++)flames(40+i*50,gy,46,40+10*Math.sin(i),t+i*130,1,i);
+  const ua=P(t,0,1000)*(1-P(t,6800,7400));for(let k=0;k<4;k++){const ph=(t/1100+k/4)%1;arrow(200+k*25,gy-50-ph*80,200+k*25,gy-76-ph*80,K.rose,2.5,1,ua*(1-ph));}
+  const ia=P(t,3500,4300);arrowPath([[40,gy-20],[140,gy-24],[210,gy-30]],K.aqua,3,ia);arrowPath([[440,gy-20],[340,gy-24],[270,gy-30]],K.aqua,3,ia);rotArrow(240,gy-60,40,8,-t/250,5,K.aqua,2.4,ia*(1-P(t,7000,7600)),-1);
+  const fw=P(t,7000,10500),h=mix(0,210,fw);if(h>0){const L=[],R=[];for(let k=0;k<=20;k++){const f=k/20,y=gy-f*h,hw=mix(16,26,f)+3*Math.sin(t/90+f*12),sw=10*Math.sin(t/600+f*3)*f;L.push([240+sw-hw,y]);R.unshift([240+sw+hw,y]);}
+   const g=X.createLinearGradient(0,gy-h,0,gy);g.addColorStop(0,'rgba(255,200,80,.2)');g.addColorStop(.5,'#ffb02e');g.addColorStop(1,'#ff4a1c');poly(L.concat(R),g);
+   for(let k=0;k<8;k++){const f=((k/8)+t/900)%1,y=gy-f*h,hw=mix(16,26,f);line(240-hw,y,240+hw,y+4,'#fff3c4',1.5,.6);}}
+  const ga=P(t,14000,14600);if(ga>0)for(let i=0;i<16;i++){const ph=(t/1100+rnd(i))%1;circ(240+(rnd(i+5)-.5)*300*ph,gy-h+20-Math.sin(ph*Math.PI)*60,2,'#ffb02e',ga*(1-ph));}
+  pill(240,30,'HEISSE LUFT STEIGT',K.rose,ua,'c',10.5);pill(W-6,gy-40,'LUFT STRÖMT NACH',K.aqua,ia*(1-P(t,6800,7100)),'r',10);
+  pill(310,100,'FEUERWIRBEL',K.orange,P(t,7300,7900),'l',11);pill(310,130,'> 1.000 °C',K.rose,P(t,10500,11100),'l',10.5);pill(240,30,'GLUT FLIEGT WEIT',K.gold,ga,'c',10.5);},
+ box:{was:'Ein Feuerwirbel ist ein rotierender Luftwirbel, der Flammen und Glut mit sich reißt. Er entsteht über großen Bränden.',
+  erkennen:['Senkrechte, rotierende Flammensäule','Meist bei großen Wald- oder Flächenbränden','Kann sich plötzlich bewegen und die Richtung ändern'],
+  bedeutung:'Feuerwirbel sind für Einsatzkräfte sehr gefährlich, weil sie Glut weit verteilen und neue Brände entfachen.',
+  tipp:'Bei sehr großen Bränden können sogar eigene Gewitterwolken entstehen – man nennt sie Pyrocumulonimbus.'}});
+
+/* ---------- HIMMEL ---------- */
+function dipole(cx,cy,c,a){for(let k=1;k<=4;k++){const s=k*22;for(const d of[-1,1]){const pts=[];for(let i=0;i<=30;i++){const th=Math.PI*(i/30),r=s*Math.pow(Math.sin(th),2)+18;pts.push([cx+d*r*Math.sin(th),cy-r*Math.cos(th)]);}path(pts,c,1.2,a*.6);}}}
+add({id:'polarlicht',area:'himmel',title:'Polarlichter',sub:'Wenn der Himmel grün leuchtet',total:19000,
+ steps:[{at:0,text:'Die Sonne schleudert ständig winzige, elektrisch geladene Teilchen ins All: den SONNENWIND.'},
+  {at:3500,text:'Das MAGNETFELD der Erde lenkt die meisten Teilchen ab – wie ein Schutzschild.'},
+  {at:7000,text:'Entlang der Feldlinien gelangen einige Teilchen bei den Polen in die Atmosphäre.'},
+  {at:10500,text:'In 100–300 km Höhe stoßen sie auf Luftteilchen und bringen sie zum Leuchten: Sauerstoff grün oder rot, Stickstoff violett.'},
+  {at:14000,text:'Das sind POLARLICHTER. Bei starken Sonnenstürmen sieht man sie sogar in Deutschland – so wie im Mai 2024.'}],
+ draw(t){if(t<10500){bg('#02040a','#071226');stars(60,.8);const cx=360,cy=150;
+   glow(()=>circ(-60,150,110,'#ffb02e'),'#ffd34d',40);
+   const ma=P(t,3500,4300);dipole(cx,cy,K.lime,ma);
+   for(let i=0;i<26;i++){const ph=((t/2600)+rnd(i))%1,y0=40+220*rnd(i+4);let x=40+ph*360,y=y0;const d=Math.abs(y0-cy);
+    if(ma>0&&x>cx-110){const def=ma*clamp((x-(cx-110))/80);y=y0+(y0<cy?-1:1)*def*(110-Math.min(d,110))*.9;if(d<40&&t>7000){const p=clamp((x-(cx-110))/100);x=mix(cx-110,cx,p);y=mix(y0,cy+(y0<cy?-38:38),p);}}
+    if(x<W)circ(x,y,1.8,'#ffd27a',.9);}
+   circ(cx,cy,34,K.sea);circ(cx-8,cy-6,10,K.ground,.9);circ(cx+10,cy+8,8,K.ground,.9);ring(cx,cy,34,'#9fd8ff',2,.6);
+   const aa=P(t,7000,7800);if(aa>0){glow(()=>{ell(cx,cy-36,16,4,'#5bff9c',aa);ell(cx,cy+36,16,4,'#5bff9c',aa);},'#5bff9c',16);}
+   pill(70,24,'SONNENWIND →',K.gold,P(t,0,700),'c',10.5);pill(cx,26,'MAGNETFELD',K.lime,ma,'c',10.5);pill(cx,H-20,'POLE LEUCHTEN',K.lime,aa,'c',10.5);}
+  else{bg('#02040a','#0a1a2a');stars(80,.9,3);const a=P(t,10500,12000);
+   for(let b=0;b<3;b++){const base=60+b*28;for(let x=0;x<W;x+=4){const y=base+18*Math.sin(x/70+t/1300+b)+8*Math.sin(x/23+t/600),h=70+30*Math.sin(x/40+t/900+b*2);
+    const g=X.createLinearGradient(0,y,0,y+h);g.addColorStop(0,b===1?'rgba(190,120,255,0)':'rgba(255,90,120,0)');g.addColorStop(.3,b===1?'rgba(190,120,255,.35)':'rgba(255,90,120,.18)');g.addColorStop(.6,'rgba(90,255,156,.55)');g.addColorStop(1,'rgba(90,255,156,0)');X.globalAlpha=a*.8;X.fillStyle=g;X.fillRect(x,y,4,h);X.globalAlpha=1;}}
+   poly([[0,H],[0,236],[80,200],[150,230],[230,190],[320,226],[400,196],[W,220],[W,H]],'#0b1420');for(let i=0;i<12;i++){const x=20+i*38;poly([[x,250],[x-8,272],[x+8,272]],'#0e1a14');}
+   pill(80,24,'GRÜN = SAUERSTOFF',K.lime,a,'c',10);pill(W-80,24,'VIOLETT = STICKSTOFF',K.purple,a,'c',10);pill(240,H-14,'AUCH IN DEUTSCHLAND (MAI 2024)',K.gold,P(t,14000,14600),'c',10);}},
+ box:{was:'Polarlichter (Nordlichter) sind leuchtende Vorhänge am Nachthimmel. Sie entstehen, wenn Teilchen der Sonne auf die Lufthülle der Erde treffen.',
+  erkennen:['Grüne, manchmal rote oder violette Bänder und Vorhänge','Am häufigsten in Norwegen, Island, Finnland und Kanada','Bewegen sich und flackern langsam'],
+  bedeutung:'Polarlichter zeigen, dass das Magnetfeld der Erde uns vor gefährlicher Strahlung aus dem All schützt.',
+  tipp:'Apps und Webseiten mit dem „Kp-Index“ zeigen, ob Polarlichter wahrscheinlich sind. Ab Kp 7 hat man auch in Bayern Chancen.'}});
+
+add({id:'sonnensturm',area:'himmel',title:'Sonnenstürme',sub:'Wenn die Sonne explodiert',total:18500,
+ steps:[{at:0,text:'Auf der Sonne gibt es dunkle SONNENFLECKEN – dort ist das Magnetfeld besonders stark verdreht.'},
+  {at:3500,text:'Reißt das Magnetfeld auf, gibt es eine gewaltige Explosion: eine SONNENERUPTION (Flare).'},
+  {at:7000,text:'Dabei schleudert die Sonne oft eine riesige Wolke aus Teilchen ins All. Sie braucht 1–3 Tage bis zur Erde.'},
+  {at:10500,text:'Trifft sie die Erde, gibt es einen GEOMAGNETISCHEN STURM: Satelliten, GPS und Funk können gestört werden.'},
+  {at:14000,text:'Sehr starke Stürme können sogar Stromnetze lahmlegen – 1989 fiel in Québec (Kanada) stundenlang der Strom aus.'}],
+ draw(t){bg('#02040a','#071226');stars(60,.8,7);const sx=-20,sy=150;
+  glow(()=>circ(sx,sy,130,'#ffb02e'),'#ffd34d',40);circ(sx,sy,130,'#ff9a1f');
+  [[60,110,9],[80,170,7],[50,200,6]].forEach(([x,y,r])=>{circ(x,y,r,'#5a2a08');circ(x,y,r*.5,'#2a1004');});
+  const fa=flashAt(t,[3500],500);if(fa>0)glow(()=>circ(80,170,14+30*fa,'#ffffff',fa),'#ffffff',30);
+  const ca=P(t,7000,7600);if(ca>0){const r=mix(20,320,Lp(t,7000,11000));X.save();X.globalAlpha=ca*(1-Lp(t,11000,13500)*.7);X.strokeStyle='#ffd27a';X.lineWidth=6;X.beginPath();X.arc(80,170,r,-.5,.5);X.stroke();X.lineWidth=2;X.beginPath();X.arc(80,170,r-12,-.45,.45);X.stroke();X.restore();}
+  const ex=410,ey=150;dipole(ex,ey,K.lime,.5);circ(ex,ey,28,K.sea);circ(ex-6,ey-5,8,K.ground);ring(ex,ey,28,'#9fd8ff',2,.6);
+  const ga=P(t,10500,11200);const st=t>10500?Math.sin(t/60)*2*ga:0;const satx=ex-50+st,saty=70;rectF(satx-6,saty-4,12,8,K.mute);rectF(satx-20,saty-2,12,4,K.blue);rectF(satx+8,saty-2,12,4,K.blue);if(ga>0&&Math.sin(t/90)>0)txt(satx,saty-14,'⚡',K.gold,12,'center',800,ga);
+  const pa=P(t,14000,14600);if(pa>0){line(ex-20,H-10,ex,H-80,K.mute,2,pa);line(ex+20,H-10,ex,H-80,K.mute,2,pa);line(ex-14,H-50,ex+14,H-50,K.mute,2,pa);if(Math.sin(t/70)>.3)glow(()=>circ(ex,H-80,4,K.gold,pa),K.gold,14);}
+  pill(150,40,'SONNENFLECKEN',K.gold,P(t,0,700)*(1-P(t,3300,3600)),'c',10.5);pill(150,40,'ERUPTION!',K.rose,P(t,3500,4000)*(1-P(t,6800,7100)),'c',11);
+  pill(230,260,'1–3 TAGE UNTERWEGS',K.gold,ca*(1-P(t,10300,10600)),'c',10);pill(ex-50,100,'GPS & FUNK GESTÖRT',K.rose,ga*(1-P(t,13800,14100)),'c',10);pill(ex-60,H-20,'STROMNETZ',K.rose,pa,'r',10);},
+ qimg:false,
+ box:{was:'Ein Sonnensturm ist ein Ausbruch von Strahlung und Teilchen auf der Sonne, der die Umgebung der Erde stören kann.',
+  erkennen:['Viele Sonnenflecken = aktive Sonne (etwa alle 11 Jahre ein Maximum)','Weltraumwetter-Dienste warnen 1–3 Tage im Voraus','Starke Polarlichter bis weit nach Süden'],
+  bedeutung:'Unsere moderne Technik – Satelliten, Navigation, Funk und Stromnetze – ist anfällig für starke Sonnenstürme.',
+  tipp:'Der stärkste bekannte Sonnensturm war das „Carrington-Ereignis“ 1859: Telegrafen fielen aus, Polarlichter sah man bis in die Karibik.'}});
+
+add({id:'meteorit',area:'himmel',title:'Meteore & Meteoriten',sub:'Von der Sternschnuppe bis zum Krater',total:19000,
+ steps:[{at:0,text:'Im All fliegen unzählige Gesteinsbrocken umher – vom Staubkorn bis zum Berg. Man nennt sie METEOROIDE.'},
+  {at:3500,text:'Tritt einer in die Erdatmosphäre ein, wird er durch die Luft glühend heiß: ein METEOR – eine Sternschnuppe.'},
+  {at:7000,text:'Die meisten verglühen vollständig. Erreicht ein Rest den Boden, heißt er METEORIT.'},
+  {at:10500,text:'Sehr große Brocken schlagen mit gewaltiger Wucht ein und hinterlassen einen KRATER – wie das Nördlinger Ries in Bayern vor rund 15 Millionen Jahren.'},
+  {at:14000,text:'Ein etwa 10 km großer Asteroid ließ vor 66 Millionen Jahren die Dinosaurier aussterben. Heute überwachen Teleskope den Himmel.'}],
+ draw(t){bg('#02040a','#0e2440');stars(70,.8,11);const gy=246;const ag=X.createLinearGradient(0,120,0,gy);ag.addColorStop(0,'rgba(80,140,220,0)');ag.addColorStop(1,'rgba(80,140,220,.35)');X.fillStyle=ag;X.fillRect(0,120,W,gy-120);
+  ground(gy);
+  const p1=Lp(t,300,3500),p2=Lp(t,3500,7000),x0=40,y0=30,x1=330,y1=gy-4;
+  if(t<7000){const p=t<3500?p1*.35:.35+p2*.65,x=mix(x0,x1,p),y=mix(y0,y1,p),hot=t>3500&&y>120;
+   if(hot){for(let k=0;k<20;k++){const q=Math.max(0,p-k*.012);circ(mix(x0,x1,q),mix(y0,y1,q),4*(1-k/20),'#ffd27a',.6*(1-k/20));}glow(()=>circ(x,y,5,'#ffffff'),'#ffb02e',20);}else{circ(x,y,5,'#7a6a5a');}}
+  else{circ(x1,y1-2,4,'#3a3a3a');}
+  if(t>7000&&t<10500)pill(x1,y1-22,'METEORIT',K.text,P(t,7000,7600),'c',10.5);
+  const ia=t>=10500;if(ia){const f=flashAt(t,[10500],400);rectF(0,0,W,H,'#ffffff',f*.6);const cr=P(t,10500,11500);X.save();X.globalAlpha=cr;X.fillStyle=K.earth;X.beginPath();X.ellipse(240,gy,110*cr,26*cr,0,0,Math.PI);X.fill();X.restore();
+   poly([[120,gy],[150,gy-10],[180,gy],[300,gy],[330,gy-10],[360,gy]],K.ground2,null,1,cr);for(let i=0;i<20;i++){const ph=Lp(t,10500,12500),an=Math.PI+.2+2.7*rnd(i);circ(240+Math.cos(an)*ph*160*rnd(i+3),gy+Math.sin(an)*ph*100*rnd(i+4)+ph*ph*60,3,K.rock,1-ph);}}
+  const ta=P(t,14000,14600);if(ta>0){line(60,gy,70,gy-34,K.mute,3,ta);rrect(56,gy-48,30,16,4,K.mute,null,1,ta);line(86,gy-40,110,gy-60,K.lime,1.5,ta,[3,3]);}
+  pill(120,40,'METEOROID',K.text,P(t,300,900)*(1-P(t,3300,3600)),'c',10.5);pill(160,110,'STERNSCHNUPPE',K.gold,P(t,3800,4400)*(1-P(t,6800,7100)),'c',10.5);
+  pill(240,200,'KRATER',K.lime,P(t,11000,11600),'c',11);pill(240,40,'NÖRDLINGER RIES · 24 km',K.gold,P(t,11500,12100)*(1-P(t,13800,14100)),'c',10);pill(240,40,'TELESKOPE WACHEN',K.lime,ta,'c',10.5);},
+ box:{was:'Meteoroide sind Gesteinsbrocken im All. Als Leuchtspur in der Atmosphäre heißen sie Meteore, auf dem Boden Meteoriten.',
+  erkennen:['Sternschnuppe: kurze Leuchtspur am Nachthimmel','Feuerkugel: besonders heller Meteor, manchmal mit Knall','Meteorit: schwerer, oft dunkler, außen verschmolzener Stein'],
+  bedeutung:'Täglich fallen viele Tonnen kosmischer Staub auf die Erde. Große Einschläge sind sehr selten, können aber verheerend sein.',
+  tipp:'Mitte August (Perseiden) kannst du bis zu 100 Sternschnuppen pro Stunde sehen – am besten fern von Stadtlichtern.'}});
+
 /* ===================== Quiz: Wissensfragen (erste Antwort = richtig) ===================== */
 const QK=[
  {q:'Wie entsteht eine Quellwolke (Cumulus)?',opts:['Warme Luft steigt auf, kühlt ab und Wasserdampf kondensiert','Kalte Luft sinkt ab und erwärmt sich','Wind bläst Nebel vom Meer nach oben','Die Sonne verdampft die Wolke von oben'],expl:'Aufsteigende Warmluft kühlt ab, bis der Wasserdampf zu Tröpfchen wird.',les:'aufwind'},
@@ -991,6 +1714,65 @@ const QK=[
  {q:'Welches Warnzeichen kündigt oft einen Tsunami an?',opts:['Das Meer zieht sich plötzlich weit zurück','Das Wasser wird plötzlich warm','Es fängt an zu schneien','Die Wellen werden ganz klein und ruhig'],expl:'Wenn der Strand plötzlich trocken liegt: sofort auf eine Anhöhe!',les:'tsunamikueste'}
 ];
 
+/* ===================== Quiz: Fragen zu Paket 1 & 2 (erste Antwort = richtig) ===================== */
+QK.push(
+ {q:'Was ist ein Elmsfeuer?',opts:['Bläuliches Leuchten an Spitzen bei hoher Spannung','Ein Blitz, der in Kirchtürme einschlägt','Ein Waldbrand nach einem Blitz','Brennendes Gas aus Sümpfen'],expl:'Die starke Spannung bringt die Luft an Spitzen zum Glimmen – ganz ohne Blitz.',les:'kugelblitz'},
+ {q:'Wie gut ist der Kugelblitz erforscht?',opts:['Noch nicht vollständig – es gibt nur Theorien','Komplett erklärt','Er wurde als Täuschung entlarvt','Man kann ihn im Labor jederzeit erzeugen'],expl:'Kugelblitze sind selten und schwer zu messen – sie sind bis heute ein Rätsel.',les:'kugelblitz'},
+ {q:'Wohin leitet ein Blitzableiter den Strom?',opts:['Über Drähte außen am Haus in die Erde','Ins Stromnetz des Hauses','In den Keller','Zurück in die Wolke'],expl:'Fangstange → Ableitung → Erder: Der Strom fließt sicher am Haus vorbei in den Boden.',les:'blitzschutz'},
+ {q:'Warum bist du bei Gewitter im Auto mit Metalldach sicher?',opts:['Die Metallhülle leitet den Strom außen herum','Die Gummireifen isolieren','Autos werden nie getroffen','Das Radio schützt vor Blitzen'],expl:'Das ist der Faradaysche Käfig – nicht die Reifen schützen dich.',les:'blitzschutz'},
+ {q:'Was ist ein Downburst?',opts:['Ein starker Fallwind aus einer Gewitterwolke','Ein Tornado über dem Meer','Ein plötzlicher Hagelschauer','Eine Lawine aus Schnee'],expl:'Kalte Luft stürzt herab und strömt am Boden in alle Richtungen auseinander.',les:'downburst'},
+ {q:'Woran erkennt man Fallböen-Schäden im Vergleich zu Tornado-Schäden?',opts:['Die Bäume liegen alle in eine Richtung','Die Bäume liegen im Kreis','Es gibt gar keine Schäden','Nur Dächer sind beschädigt'],expl:'Beim Tornado liegen Trümmer und Bäume oft kreuz und quer, bei Fallböen in Windrichtung.',les:'downburst'},
+ {q:'Was ist eine Wasserhose?',opts:['Ein Tornado über dem Wasser','Ein Wasserschlauch der Feuerwehr','Eine Flutwelle','Ein Wasserfall in den Bergen'],expl:'Wasserhosen sind Tornados über Meer oder Seen – auch an Nord- und Ostsee.',les:'wasserhose'},
+ {q:'Was unterscheidet einen Staubteufel von einem Tornado?',opts:['Er entsteht von unten ohne Gewitterwolke','Er ist immer stärker','Er tritt nur nachts auf','Er besteht aus Wasser'],expl:'Staubteufel entstehen über heißem Boden bei Sonnenschein – ohne Wolke.',les:'staubteufel'},
+ {q:'Welches Land hat die meisten Tornados der Welt?',opts:['USA','Deutschland','Japan','Australien'],expl:'In der „Tornado Alley“ treffen warme, kalte und trockene Luftmassen aufeinander.',les:'tornadogasse'},
+ {q:'Wie viele Tornados gibt es ungefähr pro Jahr in Deutschland?',opts:['etwa 20 bis 60','keine','etwa 1.000','genau 1'],expl:'Auch Deutschland hat jedes Jahr Tornados – meist schwache.',les:'tornadogasse'},
+ {q:'Was machen Hurrikanjäger?',opts:['Sie fliegen mit Messflugzeugen durch den Sturm','Sie jagen Hurrikane mit Raketen weg','Sie beobachten nur vom Strand','Sie bauen Schutzmauern'],expl:'Sie werfen Messsonden ab, die Wind, Druck und Temperatur messen.',les:'vorhersage'},
+ {q:'Was zeigt der „Vorhersagekegel“ eines Hurrikans?',opts:['Wo das Zentrum wahrscheinlich hinzieht','Wie groß der Sturm ist','Wo es regnet','Wo die Sturmflut genau auftrifft'],expl:'Der Kegel zeigt nur das mögliche Zentrum – Wind und Regen reichen viel weiter.',les:'vorhersage'},
+ {q:'Wo beginnen viele Atlantik-Hurrikane?',opts:['Als Gewitter vor der Küste Westafrikas','Am Nordpol','Im Mittelmeer','In der Ostsee'],expl:'Über dem warmen Atlantik ziehen sie dann nach Westen.',les:'lebenslauf'},
+ {q:'Ab welcher Windgeschwindigkeit bekommt ein tropischer Sturm einen Namen?',opts:['ab 63 km/h','ab 10 km/h','ab 119 km/h','ab 252 km/h'],expl:'Ab 63 km/h ist es ein tropischer Sturm und bekommt einen Namen.',les:'lebenslauf'},
+ {q:'Warum schießt ein Geysir Wasser in die Luft?',opts:['Überhitztes Wasser verdampft schlagartig, wenn der Druck sinkt','Eine Pumpe im Boden drückt es hoch','Der Wind saugt es heraus','Es regnet von unten'],expl:'Im engen Kanal wird das Wasser über 100 °C heiß und verdampft dann plötzlich.',les:'geysir'},
+ {q:'Warum dürfen Flugzeuge nicht durch Vulkanasche fliegen?',opts:['Asche schmilzt im Triebwerk und verklebt es','Asche ist magnetisch','Die Piloten sehen den Himmel nicht','Asche macht Flugzeuge schwerer'],expl:'Die winzigen Glassplitter schmelzen im heißen Triebwerk.',les:'aschewolke'},
+ {q:'Welcher Vulkan legte 2010 den Flugverkehr in Europa lahm?',opts:['Eyjafjallajökull (Island)','Vesuv (Italien)','Fuji (Japan)','Kilauea (Hawaii)'],expl:'Die Aschewolke trieb tagelang über Europa.',les:'aschewolke'},
+ {q:'Was zeichnet einen Supervulkan aus?',opts:['Ausbrüche mit über 1.000 km³ Material','Er ist besonders hoch','Er bricht jedes Jahr aus','Er spuckt nur Wasser'],expl:'Oft sieht man nur einen riesigen Kessel – die Caldera.',les:'supervulkan'},
+ {q:'Wie schützen Gummi-Lager ein Haus bei Erdbeben?',opts:['Sie schlucken die Bewegung des Bodens','Sie machen das Haus schwerer','Sie halten Wasser ab','Sie verhindern Blitzeinschläge'],expl:'Das Haus steht entkoppelt vom Boden und schwingt kaum mit.',les:'erdbebensicher'},
+ {q:'Warum kann eine Erdbeben-Warnung schneller sein als die Zerstörung?',opts:['Funk ist viel schneller als die S-Welle','Erdbeben kündigen sich Tage vorher an','Die Erde bebt erst nach einer Stunde','Satelliten sehen Erdbeben voraus'],expl:'Stationen messen die schnelle P-Welle, die Warnung reist fast lichtschnell.',les:'fruehwarnung'},
+ {q:'Welche Apps warnen in Deutschland vor Unwettern?',opts:['NINA und WarnWetter','Netflix und Spotify','Google Maps und WhatsApp','Keine – es gibt nur Sirenen'],expl:'NINA (Bund) und WarnWetter (DWD) schicken Warnungen aufs Handy.',les:'fruehwarnung'},
+ {q:'Was versteht man unter „White-out“?',opts:['Die Sicht ist im Schneesturm fast null – alles ist weiß','Ein weißer Regenbogen','Frost an Fenstern','Ein heller Blitz'],expl:'Im Schneesturm verschwimmen Himmel und Boden.',les:'schneesturm'},
+ {q:'Was sollst du tun, wenn du im Schneesturm mit dem Auto feststeckst?',opts:['Im Auto bleiben und den Auspuff freihalten','Zu Fuß Hilfe suchen','Motor dauernd laufen lassen und Fenster zu','Aussteigen und schaufeln bis es dunkel wird'],expl:'Ein zugeschneiter Auspuff kann gefährliche Abgase ins Auto leiten.',les:'schneesturm'},
+ {q:'Was ist bei Lawinen besonders gefährlich?',opts:['Eine lockere Schwachschicht tief in der Schneedecke','Frischer Pulverschnee auf flachen Wiesen','Sonne am Morgen','Schnee auf Bäumen'],expl:'Die Schichten darüber können als Schneebrett abrutschen.',les:'lawine'},
+ {q:'Welche Ausrüstung gehört abseits der Piste dazu?',opts:['Lawinen-Piepser, Sonde und Schaufel','Sonnenbrille und Handschuhe reichen','Schlitten und Thermoskanne','Nur ein Handy'],expl:'Damit kann man Verschüttete schnell orten und ausgraben.',les:'lawine'},
+ {q:'Wie entsteht Eisregen?',opts:['Regen fällt durch kalte Bodenluft, wird unterkühlt und gefriert beim Aufprall','Hagel schmilzt am Boden','Schnee wird vom Wind zusammengedrückt','Tau gefriert nachts'],expl:'Oben schmilzt der Schnee in warmer Luft, unten ist es unter 0 °C.',les:'eisregen'},
+ {q:'Was ist der Unterschied zwischen Graupel und Hagel?',opts:['Graupel ist weich und klein, Hagel hart und ab 5 mm','Graupel ist größer als Hagel','Hagel fällt nur im Winter','Es gibt keinen Unterschied'],expl:'Graupel lässt sich zerdrücken, Hagel ist hartes Eis.',les:'graupel'},
+ {q:'Warum hat jede Schneeflocke sechs Arme?',opts:['Eis kristallisiert in Sechsecken','Weil der Wind sie so formt','Weil sie aus sechs Tropfen besteht','Das ist Zufall'],expl:'Die Wassermoleküle ordnen sich im Eis sechseckig an.',les:'graupel'},
+ {q:'Was passiert, wenn der Polarwirbel gestört wird?',opts:['Kalte Polarluft kann weit nach Süden strömen','Es wird am Nordpol plötzlich heiß','Es gibt keine Jahreszeiten mehr','Die Erde dreht sich langsamer'],expl:'Der Jetstream schlägt Wellen – Kaltluft bricht nach Süden aus.',les:'polarwirbel'},
+ {q:'Was sind Flussauen?',opts:['Flache Wiesen am Fluss, die Hochwasser aufnehmen','Brücken über den Fluss','Fischarten im Fluss','Staudämme'],expl:'Auen speichern Wasser und schützen so die Orte flussabwärts.',les:'hochwasser'},
+ {q:'Wodurch entsteht ein Flusshochwasser meistens?',opts:['Tagelanger Regen oder Schneeschmelze','Ein einzelner Blitz','Starker Wind','Ebbe und Flut'],expl:'Viel Wasser im ganzen Einzugsgebiet lässt den Pegel steigen.',les:'hochwasser'},
+ {q:'Was macht eine Sturzflut so gefährlich?',opts:['Sie kommt in Minuten und fast ohne Vorwarnung','Sie kommt nur alle 100 Jahre','Sie ist ganz langsam','Sie passiert nur am Meer'],expl:'Starkregen in einem engen Tal lässt Bäche in Minuten anschwellen.',les:'sturzflut'},
+ {q:'Wie tief muss fließendes Wasser ungefähr sein, um einen Menschen umzuwerfen?',opts:['etwa 30 cm','etwa 3 Meter','etwa 1 cm','etwa 10 Meter'],expl:'Niemals durch überflutete Straßen gehen oder fahren!',les:'sturzflut'},
+ {q:'Was schützt den Keller vor Rückstau aus dem Kanal?',opts:['Eine Rückstauklappe','Ein Blitzableiter','Ein Rauchmelder','Ein dickes Fenster'],expl:'Sie verhindert, dass Abwasser aus dem vollen Kanal ins Haus drückt.',les:'starkregen'},
+ {q:'Woran erkennt man, dass ein Deich in Gefahr ist?',opts:['Wasser tritt auf der Landseite aus und spült Sand mit','Der Deich wird grüner','Vögel sitzen auf dem Deich','Das Wasser ist besonders klar'],expl:'Dann wird der Deich von innen ausgehöhlt – sofort 112 melden!',les:'deichbruch'},
+ {q:'Was ist der Monsun?',opts:['Ein Wind, der zweimal im Jahr die Richtung wechselt','Ein Tornado in Indien','Ein Vulkan in Asien','Eine Meeresströmung am Nordpol'],expl:'Im Sommer bringt er Regen vom Meer, im Winter trockene Luft vom Land.',les:'monsun'},
+ {q:'Warum strömt im Sommer feuchte Meeresluft nach Indien?',opts:['Das Land heizt sich stärker auf, es entsteht ein Hitzetief','Das Meer ist kälter als Eis','Der Himalaya bläst sie an','Der Mond zieht sie an'],expl:'Die Luft strömt vom Meer ins Hitzetief über dem Land.',les:'monsun'},
+ {q:'Was ist eine Hitzeglocke?',opts:['Ein festsitzendes Hochdruckgebiet, unter dem sich Hitze staut','Eine Glocke, die bei Hitze läutet','Ein Sonnenschirm','Ein Tiefdruckgebiet mit Regen'],expl:'Im Hoch sinkt die Luft ab, Wolken lösen sich auf, es wird Tag für Tag heißer.',les:'hitzewelle'},
+ {q:'Warum ist es in Städten bei Hitze besonders heiß?',opts:['Asphalt und Beton speichern Wärme','In Städten scheint die Sonne länger','Autos kühlen die Luft','Hochhäuser ziehen die Sonne an'],expl:'Nachts kühlt die Stadt kaum ab – eine Hitzeinsel.',les:'hitzewelle'},
+ {q:'Warum droht nach einer Dürre oft Hochwasser?',opts:['Ausgetrockneter Boden nimmt Starkregen schlecht auf','Dürre lässt Flüsse überlaufen','Die Sonne schmilzt Gletscher','Das ist ein Mythos'],expl:'Das Wasser fließt oberflächlich ab statt zu versickern.',les:'duerre'},
+ {q:'Welche drei Dinge braucht ein Feuer (Feuerdreieck)?',opts:['Brennstoff, Sauerstoff und Hitze','Holz, Wasser und Wind','Sonne, Regen und Erde','Gas, Strom und Licht'],expl:'Fehlt eines davon, geht das Feuer aus.',les:'waldbrand'},
+ {q:'Wer verursacht die meisten Waldbrände in Deutschland?',opts:['Der Mensch','Blitze','Tiere','Die Sonne direkt'],expl:'Über 90 % entstehen durch Unachtsamkeit oder Brandstiftung.',les:'waldbrand'},
+ {q:'Was ist ein Haboob?',opts:['Eine riesige Staubwand bei einem Sandsturm','Ein arabisches Gericht','Ein Kamel-Rennen','Eine Oase'],expl:'Oft ausgelöst durch die Fallböen eines Gewitters.',les:'sandsturm'},
+ {q:'Kann Saharastaub bis nach Deutschland kommen?',opts:['Ja – dann ist der Himmel gelblich und Autos sind staubig','Nein, niemals','Nur im Winter als Schnee','Nur in Spanien'],expl:'Der Staub fliegt mit Südwind Tausende Kilometer weit.',les:'sandsturm'},
+ {q:'Wie entsteht ein Feuerwirbel?',opts:['Heiße Luft über einem Brand steigt auf und beginnt sich zu drehen','Ein Blitz schlägt in einen Tornado','Ein Vulkan spuckt Feuer im Kreis','Ein Feuerwerk explodiert'],expl:'Nachströmende Luft und Wind bringen die aufsteigende Hitze zum Rotieren.',les:'feuerwirbel'},
+ {q:'Was bringt die Luft bei Polarlichtern zum Leuchten?',opts:['Teilchen von der Sonne, die auf Luftteilchen treffen','Licht vom Mond','Eiskristalle in Wolken','Lichter von Städten'],expl:'Sauerstoff leuchtet grün oder rot, Stickstoff violett.',les:'polarlicht'},
+ {q:'Welche Farbe haben Polarlichter am häufigsten?',opts:['Grün','Blau','Gelb','Weiß'],expl:'Grünes Licht kommt von Sauerstoff in etwa 100–200 km Höhe.',les:'polarlicht'},
+ {q:'Was schützt die Erde vor dem Sonnenwind?',opts:['Das Magnetfeld der Erde','Der Mond','Die Wolken','Die Ozonschicht allein'],expl:'Es lenkt die meisten geladenen Teilchen um die Erde herum.',les:'polarlicht'},
+ {q:'Was kann ein starker Sonnensturm auf der Erde stören?',opts:['Satelliten, GPS, Funk und Stromnetze','Nur das Wetter','Die Schwerkraft','Den Wasserstand der Meere'],expl:'1989 fiel in Québec (Kanada) deshalb stundenlang der Strom aus.',les:'sonnensturm'},
+ {q:'Wie lange braucht die Teilchenwolke eines Sonnensturms ungefähr bis zur Erde?',opts:['1 bis 3 Tage','8 Minuten','1 Jahr','1 Sekunde'],expl:'Licht braucht 8 Minuten, die Teilchenwolke aber Tage.',les:'sonnensturm'},
+ {q:'Was ist der Unterschied zwischen Meteor und Meteorit?',opts:['Meteor = Leuchtspur am Himmel, Meteorit = Stein am Boden','Es gibt keinen Unterschied','Meteorit ist größer als ein Planet','Meteor ist ein Stern'],expl:'Der glühende Brocken in der Luft ist ein Meteor, der Rest am Boden ein Meteorit.',les:'meteorit'},
+ {q:'Welcher Krater in Bayern entstand durch einen Meteoriteneinschlag?',opts:['Nördlinger Ries','Chiemsee','Königssee','Ammersee'],expl:'Vor rund 15 Millionen Jahren – der Krater ist etwa 24 km groß.',les:'meteorit'},
+ {q:'Wann kann man besonders viele Sternschnuppen sehen?',opts:['Mitte August (Perseiden)','Am 1. Januar','Nur bei Vollmond','Nur am Tag'],expl:'Bis zu 100 Sternschnuppen pro Stunde – fern von Stadtlichtern.',les:'meteorit'},
+ {q:'Wie viel Trinkwasser empfiehlt das BBK pro Person und Tag für den Notvorrat?',opts:['2 Liter','0,2 Liter','10 Liter','50 Liter'],expl:'Für 10 Tage sind das 20 Liter pro Person.',les:'fruehwarnung'}
+);
+
+{const ord=a=>AREAS.findIndex(x=>x.id===a);LES.sort((a,b)=>ord(a.area)-ord(b.area));}
 
 /* ================= Speicher ================= */
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
@@ -1001,7 +1783,7 @@ function updProg(){const n=LES.length,s=LES.filter(l=>SEEN.has(l.id)).length;doc
 const areaOf=id=>AREAS.find(a=>a.id===id);
 const lesOf=id=>LES.find(l=>l.id===id);
 const accVar=a=>`var(--${a.acc})`;
-const GLOW={gold:'rgba(245,197,66,.16)',purple:'rgba(179,136,255,.16)',blue:'rgba(76,154,255,.16)',orange:'rgba(255,159,67,.16)',aqua:'rgba(45,212,191,.16)',down:'rgba(240,96,93,.16)'};
+const GLOW={blue:'rgba(76,154,255,.16)',gold:'rgba(245,197,66,.16)',purple:'rgba(179,136,255,.16)',blue:'rgba(76,154,255,.16)',orange:'rgba(255,159,67,.16)',aqua:'rgba(45,212,191,.16)',ice:'rgba(156,201,255,.16)',indigo:'rgba(139,147,255,.16)',rose:'rgba(255,122,147,.16)',lime:'rgba(163,230,53,.14)',up:'rgba(31,207,143,.16)',down:'rgba(240,96,93,.16)'};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ================= Szene zeichnen ================= */
@@ -1015,15 +1797,17 @@ function stopPlayer(){if(PL){cancelAnimationFrame(PL.raf);PL=null;}}
 function renderHome(){
  const firstOpen=LES.find(l=>!SEEN.has(l.id));
  view.innerHTML=`<div class="home"><div class="kicker">Bayazit · Lern-App</div><h1>Naturgewalten-Schule</h1>
- <p class="lead">Wie entstehen Gewitter, Tornados, Hurrikane, Vulkane und Erdbeben? Jede Lektion ist ein kleines animiertes Video – Schritt für Schritt erklärt.</p>
+ <p class="lead">Wie entstehen Gewitter, Tornados, Hurrikane, Vulkane und Erdbeben – und Schneestürme, Fluten, Hitzewellen und Polarlichter? Jede Lektion ist ein kleines animiertes Video – Schritt für Schritt erklärt.</p>
  ${firstOpen?`<button class="start" data-go="l-${firstOpen.id}">${SEEN.size?'▶ Weiterlernen: ':'▶ Los geht’s: '}${esc(firstOpen.title)}</button>`:''}
  <div class="bigtiles">${AREAS.map(a=>{const ls=LES.filter(l=>l.area===a.id),s=ls.filter(l=>SEEN.has(l.id)).length;
   return `<button class="big" data-go="b-${a.id}" style="--acc:${accVar(a)};--glow:${GLOW[a.acc]}"><span class="bi">${ICONS[a.id]}</span><h2>${esc(a.name)}</h2><p>${esc(a.desc)}</p><div class="ft"><span>${s}/${ls.length}</span><span class="pb"><i style="width:${ls.length?s/ls.length*100:0}%"></i></span><span class="go">→</span></div></button>`;}).join('')}
- <button class="big" data-go="quiz" style="--acc:var(--down);--glow:${GLOW.down}"><span class="bi">${ICONS.quiz}</span><h2>Quiz</h2><p>10 zufällige Fragen: Bilder erkennen, Wissen und Rechnen.</p><div class="ft"><span>Bestwert: ${BEST}/10</span><span class="pb"><i style="width:${BEST*10}%"></i></span><span class="go">→</span></div></button>
+ <button class="big" data-go="quiz" style="--acc:var(--down);--glow:${GLOW.down}"><span class="bi">${ICONS.quiz}</span><h2>Quiz</h2><p>10 Fragen aus allen Bereichen – oder ein Quiz pro Bereich.</p><div class="ft"><span>Bestwert: ${BEST}/10</span><span class="pb"><i style="width:${BEST*10}%"></i></span><span class="go">→</span></div></button>
+ <button class="big" data-go="notfall" style="--acc:var(--up);--glow:${GLOW.up}"><span class="bi">${ICONS.notfall}</span><h2>Notfallplan</h2><p>Checkliste zum Abhaken: Vorrat, Dokumente, Warn-Apps, Haus.</p><div class="ft"><span>${notfallDone()}/${NOTFALL.reduce((s,c)=>s+c.items.length,0)}</span><span class="pb"><i style="width:${notfallDone()/NOTFALL.reduce((s,c)=>s+c.items.length,0)*100}%"></i></span><span class="go">→</span></div></button>
+ <button class="big" data-go="rechner" style="--acc:var(--blue);--glow:${GLOW.blue}"><span class="bi">${ICONS.rechner}</span><h2>Rechner</h2><p>Gewitter-Entfernung, Hurrikan-Kategorie, Erdbeben-Energie und mehr.</p><div class="ft"><span>${RECHNER.length} Rechner</span><span class="pb"><i style="width:100%"></i></span><span class="go">→</span></div></button>
  </div><p class="foot">Alle Animationen sind vereinfachte Schaubilder zum Lernen, nicht maßstabsgetreu. Bei Unwetter immer die Warnungen des Deutschen Wetterdienstes (DWD) beachten.</p></div>`;}
 function renderArea(id){const a=areaOf(id);if(!a)return renderHome();const ls=LES.filter(l=>l.area===id),s=ls.filter(l=>SEEN.has(l.id)).length;
  view.style.setProperty('--acc',accVar(a));
- view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="kicker">Bereich · ${s}/${ls.length} gesehen</div><h1 style="color:var(--acc)">${esc(a.name)}</h1><p class="lead">${esc(a.desc)}</p>
+ view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="kicker">Bereich · ${s}/${ls.length} gesehen</div><h1 style="color:var(--acc)">${esc(a.name)}</h1><p class="lead">${esc(a.desc)}</p><button class="start" data-go="quiz-${a.id}" style="background:var(--acc);color:var(--bg);margin-top:0">🧠 Quiz: ${esc(a.name)} · Bestwert ${bestOf(a.id)}/10</button>
  <div class="lcards">${ls.map((l,i)=>`<button class="lc" data-go="l-${l.id}"><canvas data-th="${l.id}"></canvas><div><small>LEKTION ${i+1}</small><b>${esc(l.title)}</b><span>${esc(l.sub)}</span></div><span class="ok ${SEEN.has(l.id)?'':'no'}">${SEEN.has(l.id)?'✓':'○'}</span></button>`).join('')}</div>`;
  drawThumbs();}
 function drawThumbs(){view.querySelectorAll('canvas[data-th]').forEach(cv=>{const L=lesOf(cv.dataset.th);drawScene(cv,L,L.thumb!=null?L.thumb:L.total,true);});}
@@ -1069,39 +1853,86 @@ const CALC=[
  ()=>{const two=Math.random()<.5;return{q:two?'Ein Erdbeben hat Magnitude 7, ein anderes Magnitude 5. Wie viel mehr Energie setzt das stärkere ungefähr frei?':'Ein Erdbeben hat Magnitude 6, ein anderes Magnitude 5. Wie viel mehr Energie setzt das stärkere ungefähr frei?',opts:two?['ca. 1.000-mal so viel','2-mal so viel','ca. 20-mal so viel','ca. 64-mal so viel']:['ca. 32-mal so viel','2-mal so viel','10-mal so viel','ca. 1.000-mal so viel'],expl:two?'Jede Stufe bringt ca. 32-mal mehr Energie: 32 × 32 ≈ 1.000.':'Eine Stufe mehr = 10-mal größerer Ausschlag, aber ca. 32-mal mehr Energie.',les:'magnitude'};},
  ()=>{const s=pick([30,45,60]),km=s/3;return{q:`Zwischen Blitz und Donner vergehen ${s} Sekunden. Wie weit ist das Gewitter weg – und bist du nach der 30/30-Regel sicher?`,opts:s<=30?[`${fmt(km)} km – du bist in Gefahr`,`${fmt(km)} km – du bist sicher`,`${fmt(s)} km – du bist sicher`,`${fmt(km/2)} km – du bist in Gefahr`]:[`${fmt(km)} km – noch etwas Abstand, aber aufmerksam bleiben`,`${fmt(km)} km – akute Gefahr, Blitz direkt über dir`,`${fmt(s)} km – völlig egal`,`${fmt(km/3,1)} km – akute Gefahr`],expl:`${s} ÷ 3 = ${fmt(km)} km. Unter 30 Sekunden (10 km) solltest du sofort Schutz suchen.`,les:'donner'};}
 ];
-function buildQuiz(){const know=shuffle(QK).slice(0,5).map(q=>({...q,opts:q.opts.slice()}));
- const calc=shuffle(CALC).slice(0,2).map(f=>f());
- const imgL=shuffle(LES.filter(l=>l.qimg!==false)).slice(0,3).map(l=>{const others=shuffle(LES.filter(o=>o!==l&&o.qimg!==false)).slice(0,3).map(o=>o.title);return{q:'Was ist hier zu sehen?',img:l.id,opts:[l.title,...others],expl:`Das ist „${l.title}“: ${l.sub}.`,les:l.id};});
- return shuffle([...know,...calc,...imgL]).map(q=>{const right=q.opts[0];const opts=shuffle(q.opts);return{...q,opts,right};});}
+function bestOf(area){return area?store.get('ng-best-'+area,0):BEST;}
+function buildQuiz(area){const inA=l=>!area||l.area===area,lesA=id=>{const L=lesOf(id);return L&&inA(L);};
+ const kPool=shuffle(QK.filter(q=>lesA(q.les))),cPool=shuffle(CALC).map(f=>f()).filter(q=>lesA(q.les)),iPool=shuffle(LES.filter(l=>l.qimg!==false&&inA(l)));
+ const nI=Math.min(3,iPool.length),nC=Math.min(2,cPool.length),nK=Math.min(kPool.length,10-nI-nC);
+ const imgL=iPool.slice(0,nI).map(l=>{let oth=LES.filter(o=>o!==l&&o.qimg!==false&&inA(o));if(oth.length<3)oth=oth.concat(LES.filter(o=>o!==l&&o.qimg!==false&&!inA(o)));return{q:'Was ist hier zu sehen?',img:l.id,opts:[l.title,...shuffle(oth).slice(0,3).map(o=>o.title)],expl:`Das ist „${l.title}“: ${l.sub}.`,les:l.id};});
+ const know=kPool.slice(0,nK).map(q=>({...q,opts:q.opts.slice()}));
+ return shuffle([...know,...cPool.slice(0,nC),...imgL]).map(q=>{const right=q.opts[0];const opts=shuffle(q.opts);return{...q,opts,right};});}
 let QZ=null;
-function renderQuiz(){if(!QZ){view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="kicker">Quiz</div><h1>Teste dein Wissen</h1><p class="lead">10 zufällige Fragen aus allen Bereichen: Bilder erkennen, Wissen und kleine Rechenaufgaben. Bestwert: <b>${BEST}/10</b></p><button class="start" id="qstart">▶ Quiz starten</button>`;
-  document.getElementById('qstart').onclick=()=>{QZ={qs:buildQuiz(),i:0,score:0,wrong:[],ans:false};renderQuiz();};return;}
- if(QZ.i>=QZ.qs.length){const sc=QZ.score;const nb=sc>BEST;if(nb){BEST=sc;store.set('ng-best',BEST);}const rep=[...new Set(QZ.wrong)];
-  view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="qcard"><div class="kicker">Ergebnis</div><div class="score">${sc} / 10</div><p class="lead">${nb?'🏆 Neuer Bestwert!':`Bestwert: ${BEST}/10`} ${sc>=9?'Ausgezeichnet!':sc>=7?'Sehr gut!':sc>=5?'Gut – da geht noch mehr.':'Schau dir die Lektionen nochmal an.'}</p>
+function startQuiz(area){const qs=buildQuiz(area);QZ={qs,n:qs.length,area,i:0,score:0,wrong:[],ans:false};renderQuiz(area);}
+function renderQuiz(area){const A=area?areaOf(area):null,best=bestOf(area),title=A?'Quiz: '+A.name:'Quiz';
+ if(A)view.style.setProperty('--acc',accVar(A));
+ if(!QZ||QZ.area!==area){view.innerHTML=`<button class="back" data-go="${A?'b-'+A.id:''}">← ${A?esc(A.name):'Startseite'}</button><div class="kicker">${A?'Bereichs-Quiz':'Quiz'}</div><h1>${esc(title)}</h1><p class="lead">${A?`10 Fragen nur zum Bereich „${esc(A.name)}“.`:'10 zufällige Fragen aus allen Bereichen.'} Bilder erkennen, Wissen und kleine Rechenaufgaben. Bestwert: <b>${best}/10</b></p><button class="start" id="qstart">▶ Quiz starten</button>
+ ${A?'':`<div class="kicker" style="margin-top:22px">Oder ein Bereich</div><div class="qareas">${AREAS.map(x=>`<button data-go="quiz-${x.id}" style="--acc:${accVar(x)}"><span class="ic">${ICONS[x.id]}</span><b>${esc(x.name)}</b><small>Bestwert ${bestOf(x.id)}/10</small></button>`).join('')}</div>`}`;
+  document.getElementById('qstart').onclick=()=>startQuiz(area);return;}
+ const n=QZ.n;
+ if(QZ.i>=n){const sc=QZ.score;const nb=sc>best;if(nb){if(area)store.set('ng-best-'+area,sc);else{BEST=sc;store.set('ng-best',BEST);}}const rep=[...new Set(QZ.wrong)],bb=Math.max(sc,best);
+  view.innerHTML=`<button class="back" data-go="${A?'b-'+A.id:''}">← ${A?esc(A.name):'Startseite'}</button><div class="qcard"><div class="kicker">Ergebnis · ${esc(title)}</div><div class="score">${sc} / ${n}</div><p class="lead">${nb?'🏆 Neuer Bestwert!':`Bestwert: ${bb}/${n}`} ${sc>=n*.9?'Ausgezeichnet!':sc>=n*.7?'Sehr gut!':sc>=n*.5?'Gut – da geht noch mehr.':'Schau dir die Lektionen nochmal an.'}</p>
   ${rep.length?`<div class="kicker">Diese Lektionen wiederholen</div><div class="rep">${rep.map(id=>`<button data-go="l-${id}">↻ ${esc(lesOf(id).title)} <span style="color:var(--mute)">· ${esc(areaOf(lesOf(id).area).name)}</span></button>`).join('')}</div>`:'<p>Alles richtig – keine Lektion zum Wiederholen. 🎉</p>'}
-  <div class="qnav"><button class="main" id="qagain">↻ Nochmal spielen</button><button data-go="">Startseite</button></div></div>`;
-  document.getElementById('qagain').onclick=()=>{QZ={qs:buildQuiz(),i:0,score:0,wrong:[],ans:false};renderQuiz();};return;}
+  <div class="qnav"><button class="main" id="qagain">↻ Nochmal spielen</button><button data-go="${A?'b-'+A.id:''}">${A?esc(A.name):'Startseite'}</button></div></div>`;
+  document.getElementById('qagain').onclick=()=>startQuiz(area);return;}
  const q=QZ.qs[QZ.i];
- view.innerHTML=`<button class="back" id="qquit">← Quiz beenden</button><div class="qcard"><div class="qbar"><i style="width:${QZ.i*10}%"></i></div><div class="kicker">Frage ${QZ.i+1} / 10 · Punkte ${QZ.score}</div><p class="qq">${esc(q.q)}</p>
+ view.innerHTML=`<button class="back" id="qquit">← Quiz beenden</button><div class="qcard"><div class="qbar"><i style="width:${QZ.i/n*100}%"></i></div><div class="kicker">${esc(title)} · Frage ${QZ.i+1} / ${n} · Punkte ${QZ.score}</div><p class="qq">${esc(q.q)}</p>
  ${q.img?`<div class="qcv"><canvas id="qcv"></canvas></div>`:''}<div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(o)}</button>`).join('')}</div><div id="qfb"></div></div>`;
- document.getElementById('qquit').onclick=()=>{QZ=null;location.hash='';};
+ document.getElementById('qquit').onclick=()=>{QZ=null;location.hash=A?'b-'+A.id:'';};
  if(q.img){const L=lesOf(q.img);drawScene(document.getElementById('qcv'),L,L.qt!=null?L.qt:L.total,true);}
  view.querySelector('.opts').onclick=e=>{const b=e.target.closest('[data-o]');if(!b||QZ.ans)return;QZ.ans=true;const ok=q.opts[+b.dataset.o]===q.right;if(ok)QZ.score++;else QZ.wrong.push(q.les);
   view.querySelectorAll('.opt').forEach(x=>{x.disabled=true;const o=q.opts[+x.dataset.o];if(o===q.right)x.classList.add('ok');else if(x===b)x.classList.add('bad');});
-  const L=lesOf(q.les);document.getElementById('qfb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><b>${ok?'✓ Richtig!':'✗ Leider falsch.'}</b> ${ok?'':`Richtig ist: <b>${esc(q.right)}</b>. `}${esc(q.expl)}</div><div class="qnav"><button id="qles">📺 Lektion: ${esc(L.title)}</button><button class="main" id="qnext">${QZ.i===9?'Ergebnis →':'Weiter →'}</button></div>`;
-  document.getElementById('qnext').onclick=()=>{QZ.i++;QZ.ans=false;renderQuiz();window.scrollTo(0,0);};
+  const L=lesOf(q.les);document.getElementById('qfb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><b>${ok?'✓ Richtig!':'✗ Leider falsch.'}</b> ${ok?'':`Richtig ist: <b>${esc(q.right)}</b>. `}${esc(q.expl)}</div><div class="qnav"><button id="qles">📺 Lektion: ${esc(L.title)}</button><button class="main" id="qnext">${QZ.i===n-1?'Ergebnis →':'Weiter →'}</button></div>`;
+  document.getElementById('qnext').onclick=()=>{QZ.i++;QZ.ans=false;renderQuiz(area);window.scrollTo(0,0);};
   document.getElementById('qles').onclick=()=>{location.hash='l-'+q.les;};};}
+
+/* ================= Notfallplan ================= */
+const NOTFALL=[
+ {t:'Vorrat für 10 Tage',items:['Trinkwasser: 2 Liter pro Person und Tag','Haltbare Lebensmittel (Konserven, Nudeln, Reis, Knäckebrot)','Essen, das man ohne Kochen essen kann','Futter für Haustiere','Campingkocher oder Gaskocher mit Kartuschen']},
+ {t:'Strom weg? Licht & Info',items:['Taschenlampe oder Stirnlampe mit Ersatzbatterien','Radio mit Batterie oder Kurbel','Powerbank (geladen)','Kerzen, Streichhölzer, Feuerzeug','Etwas Bargeld in kleinen Scheinen']},
+ {t:'Gesundheit & Hygiene',items:['Erste-Hilfe-Kasten','Wichtige Medikamente für einige Tage','Toilettenpapier, Seife, Müllbeutel','Desinfektionsmittel','FFP2-Masken (z. B. bei Asche oder Rauch)']},
+ {t:'Dokumente & Notgepäck',items:['Wichtige Dokumente in einer Mappe (Ausweise, Versicherungen, Urkunden)','Kopien der Dokumente zusätzlich digital gespeichert','Notgepäck-Rucksack pro Person (Kleidung, Decke, Wasser, Snacks)','Ersatzschlüssel für Haus und Auto','Ladekabel für Handy']},
+ {t:'Vorbereiten & Absprechen',items:['Warn-Apps NINA und WarnWetter installiert','Familien-Treffpunkt vereinbart, falls man getrennt ist','Kinder kennen 112 und die Telefonnummern der Eltern','Wichtige Nummern auf Papier notiert','Wissen, wo Hauptwasserhahn, Sicherungskasten und Gashahn sind']},
+ {t:'Haus & Grundstück',items:['Rückstauklappe im Keller vorhanden und geprüft','Dachrinnen und Abflüsse frei','Wertsachen und Wichtiges nicht im Keller lagern','Elementarversicherung (Hochwasser, Starkregen) geprüft','Rauchmelder funktionieren']},
+ {t:'Wenn das Unwetter kommt',items:['Fenster und Türen schließen, Rollläden runter','Lose Gegenstände im Garten und auf dem Balkon sichern','Auto in die Garage oder weg von Bäumen','Bei Hochwasser: Keller und Tiefgaragen meiden','Ruhe bewahren und Nachbarn helfen']}];
+function notfallDone(){return Object.values(store.get('ng-notfall',{})).filter(Boolean).length;}
+function renderNotfall(){view.style.setProperty('--acc','var(--up)');let done=store.get('ng-notfall',{});let pers=store.get('ng-personen',4);
+ const total=NOTFALL.reduce((s,c)=>s+c.items.length,0);
+ const draw=()=>{const n=Object.values(done).filter(Boolean).length;
+  view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="kicker">Checkliste · ${n}/${total} erledigt</div><h1 style="color:var(--acc)">Notfallplan</h1><p class="lead">Abhaken, was ihr schon habt. Die Liste wird auf diesem Gerät gespeichert. Grundlage sind die Empfehlungen des Bundesamts für Bevölkerungsschutz (BBK).</p>
+  <div class="np"><div class="npbar"><i style="width:${n/total*100}%"></i></div></div>
+  <div class="box calcbox" style="margin-top:14px"><h3 style="color:var(--blue)">Wasser-Rechner</h3><div class="crow"><label>Personen im Haushalt<input type="number" id="pers" min="1" max="20" value="${pers}"></label><div class="cres"><span>Trinkwasser für 10 Tage</span><b id="wres">${fmt(pers*20)} Liter</b><small id="wkis">≈ ${fmt(Math.ceil(pers*20/9))} Kisten à 6 × 1,5 l</small></div></div></div>
+  ${NOTFALL.map((c,ci)=>`<div class="ncat"><h3>${esc(c.t)} <span>${c.items.filter((_,ii)=>done[ci+'-'+ii]).length}/${c.items.length}</span></h3>${c.items.map((it,ii)=>`<label class="nitem ${done[ci+'-'+ii]?'on':''}"><input type="checkbox" data-k="${ci}-${ii}" ${done[ci+'-'+ii]?'checked':''}><span>${esc(it)}</span></label>`).join('')}</div>`).join('')}
+  <div class="qnav" style="max-width:760px"><button id="nreset">Alle Haken entfernen</button></div>
+  <p class="foot">Notruf: 112 (Feuerwehr & Rettungsdienst) · 110 (Polizei). Mehr Infos: bbk.bund.de</p>`;
+  view.querySelectorAll('[data-k]').forEach(cb=>cb.onchange=()=>{done[cb.dataset.k]=cb.checked;store.set('ng-notfall',done);draw();});
+  const pi=document.getElementById('pers');pi.oninput=()=>{pers=Math.max(1,Math.min(20,parseInt(pi.value)||1));store.set('ng-personen',pers);document.getElementById('wres').textContent=fmt(pers*20)+' Liter';document.getElementById('wkis').textContent='≈ '+fmt(Math.ceil(pers*20/9))+' Kisten à 6 × 1,5 l';};
+  const rb=document.getElementById('nreset');let armed=false;rb.onclick=()=>{if(!armed){armed=true;rb.textContent='Wirklich alle entfernen? Nochmal tippen';rb.style.borderColor='var(--down)';return;}done={};store.set('ng-notfall',done);draw();};};
+ draw();}
+
+/* ================= Rechner ================= */
+const RECHNER=[
+ {id:'donner',t:'Gewitter-Entfernung',c:'gold',in:[['Sekunden zwischen Blitz und Donner',6,0,120]],f:([s])=>{const km=s/3;return[[`${fmt(km,1)} km`,'Entfernung'],[s<30?'⚠ Gefahr – Schutz suchen!':'Noch Abstand, aufmerksam bleiben',s<30?'down':'up']];},les:'donner'},
+ {id:'hoehe',t:'Temperatur in der Höhe',c:'gold',in:[['Temperatur am Boden (°C)',25,-30,45],['Höhe (m)',1000,0,9000]],f:([T,h])=>[[`${fmt(T-h/100,1)} °C`,'aufsteigende trockene Luft (−1 °C pro 100 m)']],les:'aufwind'},
+ {id:'ef',t:'Tornado-Stärke (EF)',c:'purple',in:[['Windgeschwindigkeit (km/h)',200,0,400]],f:([v])=>{const b=[[105,'kein Tornado-Schaden (unter EF0)'],[138,'EF0'],[178,'EF1'],[218,'EF2'],[267,'EF3'],[323,'EF4'],[1e9,'EF5']];const k=b.findIndex(x=>v<x[0]);const d=['–','leichte Schäden','mäßige Schäden','erhebliche Schäden','schwere Schäden','verheerende Schäden','unglaubliche Schäden'];return[[b[k][1],'Stufe'],[d[k],'']];},les:'fujita'},
+ {id:'saffir',t:'Hurrikan-Kategorie',c:'blue',in:[['Windgeschwindigkeit (km/h)',180,0,350]],f:([v])=>{const r=v<63?'Tropisches Tief':v<119?'Tropischer Sturm':v<154?'Kategorie 1':v<178?'Kategorie 2':v<209?'Kategorie 3':v<252?'Kategorie 4':'Kategorie 5';return[[r,'Saffir-Simpson-Skala'],[v>=178?'Schwerer Hurrikan':'',v>=178?'down':'']];},les:'saffir'},
+ {id:'mag',t:'Erdbeben vergleichen',c:'aqua',in:[['Magnitude Beben A',5,1,10],['Magnitude Beben B',7,1,10]],f:([a,b])=>{const d=Math.abs(b-a),e=Math.pow(10,1.5*d),am=Math.pow(10,d);return[[`${fmt(e,e<10?1:0)}×`,'mehr Energie'],[`${fmt(am,am<10?1:0)}×`,'größerer Ausschlag']];},les:'magnitude'},
+ {id:'sp',t:'Entfernung zum Erdbeben',c:'aqua',in:[['Sekunden zwischen P- und S-Welle',10,0,300]],f:([s])=>[[`ca. ${fmt(s*8)} km`,'Faustregel: × 8 km']],les:'wellen'},
+ {id:'tsu',t:'Tsunami-Geschwindigkeit',c:'aqua',in:[['Wassertiefe (m)',4000,1,11000]],f:([d])=>{const v=Math.sqrt(9.81*d)*3.6;return[[`${fmt(v)} km/h`,'Geschwindigkeit'],[`${fmt(1000/v*60)} min`,'für 1.000 km']];},les:'tsunamientsteht'},
+ {id:'regen',t:'Regenmenge auf dem Dach',c:'indigo',in:[['Regen (Liter pro m²)',40,0,300],['Dachfläche (m²)',120,1,2000]],f:([r,a])=>{const l=r*a;return[[`${fmt(l)} Liter`,'Wasser vom Dach'],[`≈ ${fmt(l/150,1)} Badewannen`,'à 150 Liter']];},les:'starkregen'}];
+function renderRechner(){view.style.setProperty('--acc','var(--blue)');
+ view.innerHTML=`<button class="back" data-go="">← Startseite</button><div class="kicker">Werkzeuge</div><h1 style="color:var(--acc)">Rechner</h1><p class="lead">Rechne selbst nach – mit den Faustregeln aus den Lektionen.</p>
+ <div class="calcs">${RECHNER.map(r=>`<div class="box calcbox" style="--acc:var(--${r.c})" data-r="${r.id}"><h3 style="color:var(--acc)">${esc(r.t)}</h3><div class="crow">${r.in.map((x,i)=>`<label>${esc(x[0])}<input type="number" step="any" min="${x[2]}" max="${x[3]}" value="${x[1]}" data-i="${i}"></label>`).join('')}</div><div class="cout"></div><button class="clink" data-go="l-${r.les}">📺 Lektion: ${esc(lesOf(r.les).title)}</button></div>`).join('')}</div>`;
+ view.querySelectorAll('[data-r]').forEach(box=>{const r=RECHNER.find(x=>x.id===box.dataset.r);const upd=()=>{const v=[...box.querySelectorAll('input')].map(i=>{const n=parseFloat(String(i.value).replace(',','.'));return isNaN(n)?0:n;});box.querySelector('.cout').innerHTML=r.f(v).filter(x=>x[0]).map(([a,b])=>`<div class="cres"><b ${b==='down'||b==='up'?`style="color:var(--${b})"`:''}>${esc(a)}</b>${b&&b!=='down'&&b!=='up'?`<span>${esc(b)}</span>`:''}</div>`).join('');};box.querySelectorAll('input').forEach(i=>i.oninput=upd);upd();});}
 
 /* ================= Navigation ================= */
 function renderNav(){const q=(document.getElementById('search').value||'').trim().toLowerCase(),cur=location.hash.slice(1);let h='',hits=0;
  AREAS.forEach(a=>{const ls=LES.filter(l=>l.area===a.id&&(!q||(l.title+' '+l.sub+' '+l.box.was+' '+l.steps.map(s=>s.text).join(' ')).toLowerCase().includes(q)));if(!ls.length)return;hits+=ls.length;
   h+=`<div class="cat">${esc(a.name)}</div>`+ls.map(l=>`<button class="item ${SEEN.has(l.id)?'seen':''} ${cur==='l-'+l.id?'on':''}" data-go="l-${l.id}" style="--acc:${accVar(a)}"><span class="ic">${ICONS[a.id]}</span><span><b>${esc(l.title)}</b><span>${esc(l.sub)}</span></span><span class="ok">✓</span></button>`).join('');});
- if(!q||'quiz'.includes(q))h+=`<div class="cat">Quiz</div><button class="item ${cur==='quiz'?'on':''}" data-go="quiz" style="--acc:var(--down)"><span class="ic">${ICONS.quiz}</span><span><b>Quiz</b><span>Bestwert ${BEST}/10</span></span></button>`;
+ if(!q||'quiz notfallplan rechner extras'.includes(q))h+=`<div class="cat">Extras</div><button class="item ${cur==='quiz'?'on':''}" data-go="quiz" style="--acc:var(--down)"><span class="ic">${ICONS.quiz}</span><span><b>Quiz</b><span>Bestwert ${BEST}/10</span></span></button><button class="item ${cur==='notfall'?'on':''}" data-go="notfall" style="--acc:var(--up)"><span class="ic">${ICONS.notfall}</span><span><b>Notfallplan</b><span>Checkliste zum Abhaken</span></span></button><button class="item ${cur==='rechner'?'on':''}" data-go="rechner" style="--acc:var(--blue)"><span class="ic">${ICONS.rechner}</span><span><b>Rechner</b><span>${RECHNER.length} Faustregel-Rechner</span></span></button>`;
  document.getElementById('list').innerHTML=hits||!q?h:`<div class="empty">Keine Lektion gefunden.</div>`;}
 document.getElementById('search').oninput=renderNav;
-document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b||b.disabled)return;const g=b.dataset.go;if(g==='quiz'&&location.hash!=='#quiz')QZ=null;if(location.hash.slice(1)===g)route();else location.hash=g;});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b||b.disabled)return;const g=b.dataset.go;if(g.startsWith('quiz')&&location.hash!=='#'+g)QZ=null;if(location.hash.slice(1)===g)route();else location.hash=g;});
 function route(){stopPlayer();view.style.removeProperty('--acc');const h=location.hash.slice(1);
- if(h==='quiz')renderQuiz();else if(h.startsWith('b-'))renderArea(h.slice(2));else if(h.startsWith('l-'))renderLesson(h.slice(2));else renderHome();
+ if(h==='quiz')renderQuiz(null);else if(h.startsWith('quiz-'))renderQuiz(h.slice(5));else if(h==='notfall')renderNotfall();else if(h==='rechner')renderRechner();else if(h.startsWith('b-'))renderArea(h.slice(2));else if(h.startsWith('l-'))renderLesson(h.slice(2));else renderHome();
  renderNav();window.scrollTo(0,0);}
 window.addEventListener('hashchange',route);
 
