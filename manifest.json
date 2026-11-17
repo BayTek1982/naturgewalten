@@ -1,0 +1,16 @@
+{
+  "name": "Bayazit Naturgewalten-Schule",
+  "short_name": "Naturgewalten",
+  "description": "Gewitter, Tornados, Hurrikane, Vulkane und Erdbeben – animiert erklärt.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05080d",
+  "theme_color": "#05080d",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
